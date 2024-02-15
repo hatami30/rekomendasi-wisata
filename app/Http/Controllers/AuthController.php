@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -30,6 +31,7 @@ class AuthController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
+            'role' => 'required|in:user,admin',
         ]);
 
         if ($validator->fails()) {
@@ -40,9 +42,11 @@ class AuthController extends Controller
             'name' => request('name'),
             'email' => request('email'),
             'password' => Hash::make(request('password')),
+            'role' => request('role'),
         ]);
 
         if ($user) {
+            $user->assignRole(request('role'));
             return response()->json(['message' => 'Registration successful'], 201);
         } else {
             return response()->json(['error' => 'Registration failed'], 500);
@@ -58,7 +62,7 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
+        if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -94,7 +98,7 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth()->refresh());
+        return $this->respondWithToken(JWTAuth::refresh());
     }
 
     /**
@@ -106,10 +110,34 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
+        $user = auth()->user();
+        $roles = $user->getRoleNames();
+        $redirectRoute = $this->getRedirectRoute($roles);
+
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            'user' => $user,
+            'redirect_to' => $redirectRoute,
         ]);
+    }
+
+    /**
+     * Get the redirect route based on user roles.
+     *
+     * @param  array  $roles
+     *
+     * @return string
+     */
+    protected function getRedirectRoute($roles)
+    {
+        if (in_array('admin', $roles)) {
+            return '/admin/dashboard';
+        } elseif (in_array('user', $roles)) {
+            return '/user/dashboard';
+        } else {
+            return '/';
+        }
     }
 }
