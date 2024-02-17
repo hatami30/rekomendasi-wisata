@@ -3,31 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
     /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
-    }
-
-    /**
      * Register a new user.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register()
+    public function register(Request $request)
     {
-        $validator = Validator::make(request()->all(), [
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
@@ -35,52 +25,55 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => 'Validation Failed', 'messages' => $validator->messages()], 422);
+            return response()->json(['error' => $validator->errors()], 422);
         }
 
         $user = User::create([
-            'name' => request('name'),
-            'email' => request('email'),
-            'password' => Hash::make(request('password')),
-            'role' => request('role'),
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+            'role' => $request->input('role'),
         ]);
 
         if ($user) {
-            $user->assignRole(request('role'));
-            return response()->json(['message' => 'Registration successful'], 201);
+            session()->flash('success', 'Registrasi berhasil! Selamat datang di Website.');
+
+            $loginUrl = URL::to('/login');
+
+            return response()->json([
+                'message' => 'Registrasi sukses! Silahkan login...',
+                'redirect_url' => $loginUrl,
+            ]);
         } else {
-            return response()->json(['error' => 'Registration failed'], 500);
+            return response()->json(['error' => 'Registrasi gagal'], 500);
         }
     }
 
     /**
-     * Get a JWT via given credentials.
+     * Authenticate the user.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
-        $credentials = request(['email', 'password']);
+        $credentials = $request->only(['email', 'password']);
 
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if (auth()->attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
+            $user = auth()->user();
+            $roles = [$user->role];
+
+            if (in_array('admin', $roles)) {
+                return redirect()->route('admin.dashboard');
+            } elseif (in_array('user', $roles)) {
+                return redirect()->route('user.dashboard');
+            }
         }
 
-        return $this->respondWithToken($token);
+        return redirect('/login')->with('error', 'Invalid credentials');
     }
 
     /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function me()
-    {
-        return response()->json(auth()->user());
-    }
-
-    /**
-     * Log the user out (Invalidate the token).
+     * Log the user out.
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -88,56 +81,6 @@ class AuthController extends Controller
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
-    }
-
-    /**
-     * Refresh a token.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function refresh()
-    {
-        return $this->respondWithToken(JWTAuth::refresh());
-    }
-
-    /**
-     * Get the token array structure.
-     *
-     * @param  string $token
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function respondWithToken($token)
-    {
-        $user = auth()->user();
-        $roles = $user->getRoleNames();
-        $redirectRoute = $this->getRedirectRoute($roles);
-
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => JWTAuth::factory()->getTTL() * 60,
-            'user' => $user,
-            'redirect_to' => $redirectRoute,
-        ]);
-    }
-
-    /**
-     * Get the redirect route based on user roles.
-     *
-     * @param  array  $roles
-     *
-     * @return string
-     */
-    protected function getRedirectRoute($roles)
-    {
-        if (in_array('admin', $roles)) {
-            return '/admin/dashboard';
-        } elseif (in_array('user', $roles)) {
-            return '/user/dashboard';
-        } else {
-            return '/';
-        }
+        return response()->json(['message' => 'Berhasil keluar.'], 200);
     }
 }
