@@ -16,17 +16,19 @@ use App\Http\Controllers\AdminController;
 |
 */
 
+// route landing page
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
+// route auth
 Route::get('/register', function () {
-    return view('auth.register');
+    return view('pages.auth.register');
 });
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::get('/login', function () {
-    return view('auth.login');
+    return view('pages.auth.login');
 });
 Route::post('/login', [AuthController::class, 'login']);
 
