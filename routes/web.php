@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\WisataController;
+use App\Http\Controllers\Admin\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,23 +16,29 @@ use App\Http\Controllers\AdminController;
 |
 */
 
-// route landing page
+// landing page
 Route::get('/', function () {
     return view('home');
 });
 
-// route auth
-Route::get('/register', function () {
-    return view('pages.auth.register');
-});
+// auth
+Route::get('/register', [AuthController::class, 'showRegistrationForm']);
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::get('/login', function () {
-    return view('pages.auth.login');
-});
+Route::get('/login', [AuthController::class, 'showLoginForm']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
+    // admin
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/wisata', [WisataController::class, 'index'])->name('wisata.index');
+        Route::get('/wisata/create', [WisataController::class, 'create'])->name('wisata.create');
+        Route::post('/wisata/store', [WisataController::class, 'store'])->name('wisata.store');
+        Route::get('/wisata/edit/{id}', [WisataController::class, 'edit'])->name('wisata.edit');
+        Route::post('/wisata/update/{id}', [WisataController::class, 'update'])->name('wisata.update');
+        Route::delete('/wisata/delete/{id}', [WisataController::class, 'destroy'])->name('wisata.delete');
+    });
+
+    // user
 });

@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    @include('includes.header')
+    @include('pages.user.components.header')
 
     <main>
         <!-- hero section -->
@@ -178,7 +178,7 @@
 
     </main>
 
-    @include('includes.footer')
+    @include('pages.user.components.footer')
 
     @include('includes.script')
     <script>

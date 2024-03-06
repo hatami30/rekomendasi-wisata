@@ -17,7 +17,7 @@
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class='nav-link' href='{{ url('/') }}'>Beranda</a>
+                        <a class='nav-link active' href='{{ url('/') }}'>Beranda</a>
                     </li>
                     <li class="nav-item">
                         <a class='nav-link' href='{{ url('/') }}'>Tentang</a>
