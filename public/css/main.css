@@ -66,6 +66,7 @@ a {
 }
 
 /* button with links setup */
+button.btn.btn-primary,
 a.btn.btn-primary {
     background-color: var(--primary-color) !important;
     padding: 0.7rem 2rem;
@@ -78,11 +79,13 @@ a.btn.btn-primary {
     transition: top ease 0.5s;
 }
 
+button.btn.btn-secondary,
 a.btn.btn-primary:hover {
     top: -5px;
     box-shadow: 0px 10px 19px rgba(51, 94, 234, 0.27);
 }
 
+button.btn.btn-secondary, 
 a.btn.btn-secondary {
     background-color: var(--secondary-color) !important;
     padding: 0.7rem 2rem;
@@ -100,6 +103,7 @@ button.btn.btn-primary:focus {
     box-shadow: none !important;
 }
 
+button.btn.btn-secondary:hover, 
 a.btn.btn-secondary:hover {
     top: -5px;
     box-shadow: 0px 10px 19px rgba(51, 94, 234, 0.27);

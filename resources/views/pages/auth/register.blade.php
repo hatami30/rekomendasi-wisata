@@ -45,6 +45,7 @@
                         </div>
                         <div class="form-group position-relative has-icon-left mb-4">
                             <select name="role" class="form-control form-control-xl">
+                                <option value="admin">Admin</option>
                                 <option value="user">Pengunjung</option>
                             </select>
                             <div class="form-control-icon">

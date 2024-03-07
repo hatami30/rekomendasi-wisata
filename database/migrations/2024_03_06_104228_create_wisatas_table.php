@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('wisatas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_kategori');
+            $table->unsignedBigInteger('id_kategori')->nullable()->default(NULL);
             $table->string('nama_wisata');
             $table->string('lokasi_wisata');
             $table->text('desk_wisata');
-            $table->string('gambar_wisata');
+            $table->string('gambar_wisata')->nullable()->default(NULL);
             $table->timestamps();
         });
     }
