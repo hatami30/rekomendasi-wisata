@@ -15,9 +15,10 @@
             </div>
 
             <div class="card-body table-responsive">
-                <table class="table table-striped table-bordered" id="wisataTable" data-toggle="dataTable">
+                <table id="wisataTable" class="table table-striped" style="width:100%">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama Wisata</th>
                             <th>Lokasi</th>
                             <th>Deskripsi</th>
@@ -27,15 +28,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($wisatas as $wisata)
+                        @foreach ($wisatas as $index => $wisata)
                             <tr>
+                                <td>{{ $index + 1 }}</td>
                                 <td class="text-nowrap">{{ $wisata->nama_wisata }}</td>
                                 <td>{{ $wisata->lokasi_wisata }}</td>
                                 <td>{{ $wisata->desk_wisata }}</td>
                                 <td>{{ $wisata->kategori->nama_kategori }}</td>
                                 <td class="w-auto">
                                     <img src="{{ asset('storage/' . $wisata->gambar_wisata) }}"
-                                        alt="Foto {{ $wisata->nama_wisata }}" class="img-fluid rounded w-50 h-auto">
+                                        alt="Foto {{ $wisata->nama_wisata }}" class="img-fluid rounded">
                                 </td>
                                 <td class="text-nowrap">
                                     <a href="{{ route('admin.wisata.edit', $wisata->id) }}"

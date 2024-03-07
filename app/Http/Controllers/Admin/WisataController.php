@@ -25,7 +25,7 @@ class WisataController extends Controller
     public function create()
     {
         $kategoris = Kategori::all();
-        return view('pages.admin.wisata.create', compact('kategoris'));
+        return view('pages.admin.wisata.createOrUpdate', compact('kategoris'));
     }
 
     /**
@@ -68,7 +68,8 @@ class WisataController extends Controller
     public function edit(string $id)
     {
         $wisata = Wisata::findOrFail($id);
-        return view('pages.admin.wisata.edit', compact('wisata'));
+        $kategoris = Kategori::all();
+        return view('pages.admin.wisata.createOrUpdate', compact('wisata', 'kategoris'));
     }
 
     /**

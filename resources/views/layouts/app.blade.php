@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="{{ asset('assets/compiled/css/app-dark.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/compiled/css/auth.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/extensions/simple-datatables/style.css') }}">
-    <link rel="stylesheet" crossorigin href="{{ asset('./assets/compiled/css/table-datatable.css ') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/extensions/simple-datatables/style.css') }}">
+    <link rel="stylesheet" crossorigin href="{{ asset('./assets/compiled/css/table-datatable.css ') }}"> --}}
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">

@@ -51,7 +51,7 @@
     </div>
 
     @include('includes.script')
-    
+
 
 </body>
 

@@ -35,7 +35,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/wisata/create', [WisataController::class, 'create'])->name('wisata.create');
         Route::post('/wisata/store', [WisataController::class, 'store'])->name('wisata.store');
         Route::get('/wisata/edit/{id}', [WisataController::class, 'edit'])->name('wisata.edit');
-        Route::post('/wisata/update/{id}', [WisataController::class, 'update'])->name('wisata.update');
+        Route::put('/wisata/update/{id}', [WisataController::class, 'update'])->name('wisata.update');
         Route::delete('/wisata/delete/{id}', [WisataController::class, 'destroy'])->name('wisata.delete');
     });
 

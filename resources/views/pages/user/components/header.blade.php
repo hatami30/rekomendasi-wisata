@@ -27,9 +27,10 @@
                     </li>
                 </ul>
                 <div class="ml-auto">
-                    <a class='btn btn-primary d-block d-md-inline-block shadow-none' href='{{ url('/login') }}'>Memulai</a>
+                    <a class='btn btn-primary d-block d-md-inline-block shadow-none'
+                        href='{{ url('/login') }}'>Memulai</a>
                 </div>
             </div>
         </div>
     </nav>
-    </header>
+</header>
