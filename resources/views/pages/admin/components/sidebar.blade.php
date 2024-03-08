@@ -65,13 +65,6 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item {{ request()->segment('2') == 'perhitungan' ? 'active' : '' }}">
-                    <a href="{{ route('admin.dashboard') }}" class='sidebar-link'>
-                        <i class="bi bi-calculator"></i>
-                        <span>Perhitungan</span>
-                    </a>
-                </li>
-
                 <li class="sidebar-item {{ request()->segment('2') == 'peringkat' ? 'active' : '' }}">
                     <a href="{{ route('admin.dashboard') }}" class='sidebar-link'>
                         <i class="bi bi-star"></i>

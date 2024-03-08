@@ -17,3 +17,11 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+bootstrap/compiled.php
+app/storage/
+public/storage
+public/hot
+public_html/storage
+public_html/hot
+.storage/*.key
+/.vagrant

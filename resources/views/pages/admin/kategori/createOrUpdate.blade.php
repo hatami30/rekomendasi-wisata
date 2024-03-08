@@ -35,7 +35,8 @@
                     <div class="mb-3">
                         <label for="nama_kategori" class="form-label">Nama Kategori</label>
                         <input type="text" class="form-control" id="nama_kategori" name="nama_kategori"
-                            value="{{ isset($kategori) ? $kategori->nama_kategori : old('nama_kategori') }}" required>
+                            value="{{ isset($kategori) ? $kategori->nama_kategori : old('nama_kategori') }}" required
+                            placeholder="Masukkan Kategori Wisata">
                         @error('nama_kategori')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
