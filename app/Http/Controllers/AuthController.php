@@ -111,7 +111,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
-        return response()->json(['message' => 'Berhasil keluar.'], 200);
+        Auth::logout();
+        return redirect()->route('login.form');
     }
 }

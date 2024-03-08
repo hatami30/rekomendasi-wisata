@@ -51,6 +51,13 @@
                     </a>
                 </li>
 
+                <li class="sidebar-item {{ request()->segment('2') == 'kategori' ? 'active' : '' }}">
+                    <a href="{{ route('admin.kategori.index') }}" class='sidebar-link'>
+                        <i class="bi bi-tags"></i>
+                        <span>Kategori</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-item {{ request()->segment('2') == 'wisata' ? 'active' : '' }}">
                     <a href="{{ route('admin.wisata.index') }}" class='sidebar-link'>
                         <i class="bi bi-airplane"></i>
@@ -70,6 +77,17 @@
                         <i class="bi bi-star"></i>
                         <span>Peringkat</span>
                     </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a href="#" class='sidebar-link'
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="bi bi-power"></i>
+                        <span>Keluar</span>
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 </li>
 
             </ul>

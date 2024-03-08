@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('kategoris', function (Blueprint $table) {
             $table->id();
             $table->string('nama_kategori');
+            $table->string('slug')->unique(); 
             $table->timestamps();
         });
     }
@@ -23,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('kategoris');
-        Schema::enableForeignKeyConstraints();
     }
 };
