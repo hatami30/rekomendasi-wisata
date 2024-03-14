@@ -15,8 +15,9 @@ class WisataController extends Controller
      */
     public function index()
     {
+        $jumlahWisata = Wisata::count();
         $wisatas = Wisata::all();
-        return view('pages.admin.wisata.index', compact('wisatas'));
+        return view('pages.admin.wisata.index', compact('jumlahWisata', 'wisatas'));
     }
 
     /**

@@ -17,18 +17,34 @@
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class='nav-link active' href='{{ url('/') }}'>Beranda</a>
+                        <a class='nav-link {{ Request::is('/') ? 'active' : '' }}'
+                            href='{{ url('/') }}'>Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a class='nav-link' href='{{ url('/') }}'>Tentang</a>
+                        <a class='nav-link {{ Request::is('about') ? 'active' : '' }}'
+                            href='{{ url('/about') }}'>Tentang</a>
                     </li>
                     <li class="nav-item">
-                        <a class='nav-link' href='{{ url('/') }}'>Rekomendasi</a>
+                        <a class='nav-link {{ Request::is('rekomendasi-wisata') ? 'active' : '' }}'
+                            href='{{ url('/rekomendasi-wisata') }}'>Rekomendasi</a>
                     </li>
                 </ul>
                 <div class="ml-auto">
-                    <a class='btn btn-primary d-block d-md-inline-block shadow-none'
-                        href='{{ url('/login') }}'>Memulai</a>
+                    @guest
+                        <a class='btn btn-primary d-block d-md-inline-block shadow-none' href='{{ url('/login') }}'>Login
+                            &nbsp; <i class="bi bi-person"></i></a>
+                    @else
+                        <span class="navbar-text user-greeting" style="margin-right: 8px;">
+                            Halo, {{ Auth::user()->name }}
+                        </span>
+                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn icon btn-logout rounded-pill"
+                                style="background-color: #9eb384;">
+                                <i class="bi bi-box-arrow-right" style="color: white;"></i>
+                            </button>
+                        </form>
+                    @endguest
                 </div>
             </div>
         </div>

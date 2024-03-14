@@ -2,9 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\AboutController;
 use App\Http\Controllers\Admin\WisataController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\User\WisataDetailController;
+use App\Http\Controllers\User\RekomendasiWisataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +21,11 @@ use App\Http\Controllers\Admin\DashboardController;
 |
 */
 
-// landing page
-Route::get('/', function () {
-    return view('home');
-});
+// public
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/about', [AboutController::class, 'index'])->name('about');
+Route::get('/rekomendasi-wisata', [RekomendasiWisataController::class, 'index'])->name('rekomendasi.wisata');
+Route::get('/wisata/{id}', [WisataDetailController::class, 'show'])->name('wisata.detail');
 
 // auth
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register.form');
@@ -31,24 +36,34 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
     // admin
-    Route::prefix('admin')->name('admin.')->group(function () {
+    Route::middleware(['App\Http\Middleware\CheckRole:admin'])->prefix('admin')->name('admin.')->group(function () {
+
         // dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
         // wisata
-        Route::get('/wisata', [WisataController::class, 'index'])->name('wisata.index');
-        Route::get('/wisata/create', [WisataController::class, 'create'])->name('wisata.create');
-        Route::post('/wisata/store', [WisataController::class, 'store'])->name('wisata.store');
-        Route::get('/wisata/edit/{id}', [WisataController::class, 'edit'])->name('wisata.edit');
-        Route::put('/wisata/update/{id}', [WisataController::class, 'update'])->name('wisata.update');
-        Route::delete('/wisata/delete/{id}', [WisataController::class, 'destroy'])->name('wisata.delete');
+        Route::prefix('wisata')->name('wisata.')->group(function () {
+            Route::get('/', [WisataController::class, 'index'])->name('index');
+            Route::get('/create', [WisataController::class, 'create'])->name('create');
+            Route::post('/store', [WisataController::class, 'store'])->name('store');
+            Route::get('/edit/{id}', [WisataController::class, 'edit'])->name('edit');
+            Route::put('/update/{id}', [WisataController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [WisataController::class, 'destroy'])->name('delete');
+        });
+
         // kategori
-        Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
-        Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
-        Route::post('/kategori/store', [KategoriController::class, 'store'])->name('kategori.store');
-        Route::get('/kategori/edit/{id}', [KategoriController::class, 'edit'])->name('kategori.edit');
-        Route::put('/kategori/update/{id}', [KategoriController::class, 'update'])->name('kategori.update');
-        Route::delete('/kategori/delete/{id}', [KategoriController::class, 'destroy'])->name('kategori.delete');
+        Route::prefix('kategori')->name('kategori.')->group(function () {
+            Route::get('/', [KategoriController::class, 'index'])->name('index');
+            Route::get('/create', [KategoriController::class, 'create'])->name('create');
+            Route::post('/store', [KategoriController::class, 'store'])->name('store');
+            Route::get('/edit/{id}', [KategoriController::class, 'edit'])->name('edit');
+            Route::put('/update/{id}', [KategoriController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [KategoriController::class, 'destroy'])->name('delete');
+        });
     });
 
     // user
+    Route::middleware(['App\Http\Middleware\CheckRole:user'])->prefix('user')->name('user.')->group(function () {
+        
+    });
 });

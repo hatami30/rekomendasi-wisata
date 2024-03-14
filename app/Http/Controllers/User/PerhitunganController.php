@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Admin\Rating;
+use App\Models\User\Rating;
 use App\Models\Admin\Wisata;
 
 class PerhitunganController extends Controller
