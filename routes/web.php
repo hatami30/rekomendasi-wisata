@@ -26,6 +26,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/rekomendasi-wisata', [RekomendasiWisataController::class, 'index'])->name('rekomendasi.wisata');
 Route::get('/wisata/{id}', [WisataDetailController::class, 'show'])->name('wisata.detail');
+Route::get('/wisata-detail', [WisataDetailController::class, 'index'])->name('wisata.detail');
 
 // auth
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register.form');

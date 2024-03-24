@@ -17,7 +17,7 @@ class PerhitunganController extends Controller
         $unratedWisata = Wisata::whereNotIn('id', array_keys($userRatings))->get();
         $recommendations = $this->calculateRecommendations($userRatings, $similarities, $unratedWisata);
         
-        return view('recommendations.index', compact('recommendations'));
+        return view('', compact('recommendations'));
     }
 
     private function calculateSimilarities($userRatings, $allRatings)

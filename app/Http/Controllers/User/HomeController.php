@@ -18,7 +18,7 @@ class HomeController extends Controller
         $wisatas = DB::table('wisatas')
             ->selectRaw('count(*) as jumlah, 
                 case 
-                    when k.slug in ("pantai", "gunung", "air-terjun", "danau") then "Alam"
+                    when k.slug in ("pantai", "gunung", "air-terjun", "air-panas", "danau", "penangkaran", "mangrove") then "Alam"
                     when k.slug in ("makam", "masjid") then "Religi"
                     else k.slug 
                 end as kategori')

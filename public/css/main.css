@@ -460,6 +460,26 @@ figcaption {
 }
 
 /*------------------------ 
+Wisata Detail Section
+------------------------*/
+
+section.wisata-detail {
+    padding: 7rem 0 0 0;
+}
+
+.image-container {
+    margin-bottom: 40px;
+}
+
+.slider-container {
+    margin-bottom: 20px;
+}
+
+.rating-container {
+    margin-bottom: 20px;
+}
+
+/*------------------------ 
 Responsive
 ------------------------*/
 

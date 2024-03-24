@@ -14,6 +14,7 @@ class WisataDetailController extends Controller
     public function index()
     {
         //
+        return view("pages.user.wisata-detail");
     }
 
     /**
@@ -37,13 +38,13 @@ class WisataDetailController extends Controller
      */
     public function show(string $id)
     {
-        $wisata = Wisata::find($id);
+        // $wisata = Wisata::find($id);
 
-        if (!$wisata) {
-            abort(404);
-        }
+        // if (!$wisata) {
+        //     abort(404);
+        // }
 
-        return view('pages.user.wisata-detail', compact('wisata'));
+        // return view('pages.user.wisata-detail', compact('wisata'));
     }
 
     /**

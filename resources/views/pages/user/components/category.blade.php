@@ -21,11 +21,11 @@
                 <a href="#">
                     <figure>
                         <div class="img-holder">
-                            <img class="gunung" data-name="gunung" title="gunung"
-                                src="https://www.svgrepo.com/show/489052/mountain.svg" alt="img-description"
-                                width="42" height="42">
+                            <img class="danau" data-name="danau" title="danau"
+                                src="https://www.svgrepo.com/show/493923/lake.svg" alt="img-description" width="42"
+                                height="42">
                         </div>
-                        <figcaption class="mt-2" style="overflow:hidden">Gunung</figcaption>
+                        <figcaption class="mt-2" style="overflow:hidden">Danau</figcaption>
                     </figure>
                 </a>
             </li>
@@ -50,6 +50,30 @@
                                 width="42" height="42">
                         </div>
                         <figcaption class="mt-2" style="overflow:hidden">Air Panas</figcaption>
+                    </figure>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <figure>
+                        <div class="img-holder">
+                            <img class="mangrove" data-name="mangrove" title="mangrove"
+                                src="https://i.ibb.co/GxhnRmn/mangrove-svgrepo-com-1.png"
+                                alt="img-description" width="42" height="42">
+                        </div>
+                        <figcaption class="mt-2" style="overflow:hidden">Mangrove</figcaption>
+                    </figure>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <figure>
+                        <div class="img-holder">
+                            <img class="penangkaran" data-name="penangkaran" title="penangkaran"
+                                src="https://www.svgrepo.com/show/307457/walking-deer-wildlife-deer-animal.svg"
+                                alt="img-description" width="42" height="42">
+                        </div>
+                        <figcaption class="mt-2" style="overflow:hidden">Penangkaran</figcaption>
                     </figure>
                 </a>
             </li>
