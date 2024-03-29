@@ -25,8 +25,9 @@ use App\Http\Controllers\User\RekomendasiWisataController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/rekomendasi-wisata', [RekomendasiWisataController::class, 'index'])->name('rekomendasi.wisata');
-Route::get('/wisata/{id}', [WisataDetailController::class, 'show'])->name('wisata.detail');
-Route::get('/wisata-detail', [WisataDetailController::class, 'index'])->name('wisata.detail');
+Route::get('/rekomendasi-wisata/{slug}', [RekomendasiWisataController::class, 'filterByCategory'])->name('rekomendasi.wisata.filter');
+Route::get('/wisata/{id}', [WisataDetailController::class, 'show'])->name('wisata.detail'); 
+// Route::get('/wisata-detail', [WisataDetailController::class, 'index'])->name('wisata.detail');
 
 // auth
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register.form');

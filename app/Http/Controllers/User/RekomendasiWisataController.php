@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Models\Admin\Wisata;
 use Illuminate\Http\Request;
+use App\Models\Admin\Kategori;
+use App\Http\Controllers\Controller;
 
 class RekomendasiWisataController extends Controller
 {
@@ -12,7 +14,8 @@ class RekomendasiWisataController extends Controller
      */
     public function index()
     {
-        return view('pages.user.rekomendasi-wisata');
+        $wisatas = Wisata::paginate(12);
+        return view('pages.user.rekomendasi-wisata', compact('wisatas'));
     }
 
     /**
@@ -61,5 +64,17 @@ class RekomendasiWisataController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function filterByCategory($slug) 
+    {
+        $kategori = Kategori::where('slug', $slug)->first();
+
+        if ($kategori) {
+            $wisatas = Wisata::where('id_kategori', $kategori->id)->paginate(12);
+            return view('pages.user.rekomendasi-wisata', compact('wisatas'));
+        } else {
+            abort(404);
+        }
     }
 }

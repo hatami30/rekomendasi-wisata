@@ -10,8 +10,8 @@ class Rating extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'wisata_id',
+        'id_user',
+        'id_wisata',
         'harga',
         'fasilitas',
         'keamanan',
@@ -52,6 +52,6 @@ class Rating extends Model
 
     public function getCriteriaNames()
     {
-        return array_diff($this->fillable, ['user_id', 'wisata_id']);
+        return array_diff($this->fillable, ['id_user', 'id_wisata']);
     }
 }

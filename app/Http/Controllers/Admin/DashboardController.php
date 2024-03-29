@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Admin\Wisata;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
@@ -12,7 +14,19 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('pages.admin.dashboard');
+        $totalWisatas = Wisata::count();
+        $wisatas = DB::table('wisatas')
+            ->selectRaw('count(*) as jumlah, 
+                case 
+                    when k.slug in ("pantai", "gunung", "air-terjun", "air-panas", "danau", "penangkaran", "mangrove") then "Alam"
+                    when k.slug in ("makam", "masjid") then "Religi"
+                    else k.slug 
+                end as kategori')
+            ->join('kategoris as k', 'wisatas.id_kategori', '=', 'k.id')
+            ->groupBy('kategori')
+            ->get();
+
+        return view('pages.admin.dashboard', compact('totalWisatas', 'wisatas'));
     }
 
     /**
