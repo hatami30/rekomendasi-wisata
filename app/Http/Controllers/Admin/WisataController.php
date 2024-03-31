@@ -115,17 +115,4 @@ class WisataController extends Controller
 
         return redirect()->route('admin.wisata.index')->with('success', 'Data wisata berhasil dihapus.');
     }
-    
-    // public function filterByCategory($slug) 
-    // {
-    //     $kategori = Kategori::where('slug', $slug)->first();
-    
-    //     if ($kategori) {
-    //         $wisatas = Wisata::where('id_kategori', $kategori->id)->get();
-    
-    //         return response()->json($wisatas);
-    //     } else {
-    //         return response()->json(['message' => 'Kategori tidak ditemukan'], 404);
-    //     }
-    // }    
 }

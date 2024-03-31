@@ -15,14 +15,13 @@ class HomeController extends Controller
     public function index()
     {
         $totalWisatas = Wisata::count();
-        $wisatas = DB::table('wisatas')
-            ->selectRaw('count(*) as jumlah, 
+        $wisatas = Wisata::join('kategoris as k', 'wisatas.id_kategori', '=', 'k.id')
+            ->select(DB::raw('count(*) as jumlah, 
                 case 
                     when k.slug in ("pantai", "gunung", "air-terjun", "air-panas", "danau", "penangkaran", "mangrove") then "Alam"
                     when k.slug in ("makam", "masjid") then "Religi"
                     else k.slug 
-                end as kategori')
-            ->join('kategoris as k', 'wisatas.id_kategori', '=', 'k.id')
+                end as kategori'))
             ->groupBy('kategori')
             ->get();
 
