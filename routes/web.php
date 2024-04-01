@@ -21,14 +21,6 @@ use App\Http\Controllers\User\RekomendasiWisataController;
 |
 */
 
-// public
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/about', [AboutController::class, 'index'])->name('about');
-Route::get('/rekomendasi-wisata', [RekomendasiWisataController::class, 'index'])->name('rekomendasi.wisata');
-Route::get('/rekomendasi-wisata/{slug}', [RekomendasiWisataController::class, 'filterByCategory'])->name('rekomendasi.wisata.filter');
-Route::get('/wisata/{id}', [WisataDetailController::class, 'show'])->name('wisata.detail'); 
-// Route::get('/wisata-detail', [WisataDetailController::class, 'index'])->name('wisata.detail');
-
 // auth
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register.form');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
@@ -66,6 +58,11 @@ Route::middleware(['auth'])->group(function () {
 
     // user
     Route::middleware(['App\Http\Middleware\CheckRole:user'])->prefix('user')->name('user.')->group(function () {
-        
+        Route::get('/', [HomeController::class, 'index'])->name('home');
+        Route::get('/about', [AboutController::class, 'index'])->name('about');
+        Route::get('/rekomendasi-wisata', [RekomendasiWisataController::class, 'index'])->name('rekomendasi.wisata');
+        Route::get('/rekomendasi-wisata/{slug}', [RekomendasiWisataController::class, 'filterByCategory'])->name('rekomendasi.wisata.filter');
+        Route::get('/wisata/{id}', [WisataDetailController::class, 'show'])->name('wisata.detail'); 
+        Route::post('/wisata/rating', [WisataDetailController::class, 'store'])->name('wisata.rating.store');
     });
 });

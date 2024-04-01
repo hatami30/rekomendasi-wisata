@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\User\Rating;
+use Spatie\Permission\Traits\HasRoles;
+// use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -46,4 +48,12 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Get the ratings associated with the user.
+     */
+    public function rating()
+    {
+        return $this->hasMany(Rating::class, 'id_user');
+    }
 }

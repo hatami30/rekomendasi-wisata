@@ -37,6 +37,11 @@
                         </div>
                         <button class="btn btn-custom btn-block btn-lg shadow-lg mt-5" type="submit">Masuk</button>
                     </form>
+                    @if (session('error'))
+                        <div class="alert alert-danger mt-3">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                     <div class="text-center mt-5 text-lg fs-4">
                         <p class="text-gray-600">Belum mempunyai akun? <a href="./register"
                                 class="font-bold txt-color">Daftar</a>.</p>

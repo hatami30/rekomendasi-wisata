@@ -2,8 +2,9 @@
 
 namespace App\Models\Admin;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User\Rating;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Wisata extends Model
 {
@@ -14,5 +15,13 @@ class Wisata extends Model
     public function kategori()
     {
         return $this->belongsTo(Kategori::class, 'id_kategori');
+    }
+
+    /**
+     * Get the ratings for the wisata.
+     */
+    public function rating()
+    {
+        return $this->hasMany(Rating::class, 'id_wisata');
     }
 }

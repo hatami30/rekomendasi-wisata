@@ -2,8 +2,10 @@
 
 namespace App\Models\User;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
+use App\Models\Admin\Wisata;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Rating extends Model
 {
@@ -20,6 +22,16 @@ class Rating extends Model
         'keindahan',
         'pelayanan',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
+    }
+
+    public function wisata()
+    {
+        return $this->belongsTo(Wisata::class, 'id_wisata');
+    }
 
     public function calculateAverageRating()
     {

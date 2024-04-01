@@ -8,6 +8,7 @@
     <script src="https://cdn.datatables.net/2.0.2/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 
     <!-- Assets -->

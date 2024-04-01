@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AuthenticateUser;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -68,5 +69,6 @@ class Kernel extends HttpKernel
 
     protected $routeMiddleware = [
         'role' => \App\Http\Middleware\CheckRole::class,
+        'auth.user' => AuthenticateUser::class,
     ];
 }

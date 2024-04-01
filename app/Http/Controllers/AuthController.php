@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -77,16 +81,18 @@ class AuthController extends Controller
             $roles = [$user->role];
 
             if (in_array(User::ROLE_ADMIN, $roles)) {
-                Session::flash('success', 'Login successful! Welcome, admin.');
+                Session::flash('success', 'Login berhasil! Selamat datang, admin.');
                 return redirect()->route('admin.dashboard');
             } elseif (in_array(User::ROLE_USER, $roles)) {
-                Session::flash('success', 'Login successful! Welcome, user.');
-                return redirect()->route('user.dashboard');
+                $previousUrl = Session::get('previousUrl');
+                Session::put('previousUrl', URL::previous());
+                return Redirect::to($previousUrl);
             }
         }
 
-        Session::flash('error', 'Invalid credentials');
-        return redirect('/login')->with('error', 'Invalid credentials');
+        Session::flash('error', 'Kesalahan login. Silakan coba lagi.');
+
+        return redirect('/login')->with('error', 'Kesalahan login. Silakan coba lagi.');
     }
 
     public function showLoginForm()
@@ -101,6 +107,7 @@ class AuthController extends Controller
         //         return redirect()->route('user.dashboard');
         //     }
         // }
+
         return view('pages.auth.login');
     }
 
@@ -109,9 +116,13 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout()
+    public function logout(Request $request): RedirectResponse
     {
+        $previousUrl = URL::previous();
+        Session::put('previousUrl', $previousUrl);
+
         Auth::logout();
-        return redirect()->route('login.form');
+
+        return Redirect::to($previousUrl);
     }
 }
