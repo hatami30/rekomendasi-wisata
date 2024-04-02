@@ -42,15 +42,19 @@
             <div class="row mt-4">
                 <div class="col-lg-8">
                     <h2 class="mb-4 fw-normal">{{ $wisata->nama_wisata }}</h2>
-                    <p class="fs-6 fw-light lead">Deskripsi wisata: {{ $wisata->desk_wisata }}</p>
-                    <p>Rata-rata Rating: {{ $averageRating }}</p>
+                    <p class="fs-6 fw-light lead" style="max-width: 700px; text-align: justify;">Deskripsi wisata:
+                        {{ $wisata->desk_wisata }}</p>
+                    <div class="mb-3" id="ratingContainer">
+                        <div id="rating" data-rating="{{ $averageRating }}"></div>
+                        <span id="ratingText">{{ $averageRating }}</span>
+                    </div>
                     <div class="dropdown" style="position: relative;">
                         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Pilih Rating
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="ratingDropdown"
-                            style="position: absolute; max-height: 70px; overflow-y: auto; z-index: 1000;">
+                            style="position: absolute; max-height: 80px; overflow-y: auto; z-index: 1000;">
                             <form action="{{ route('user.wisata.rating.store') }}" method="post">
                                 @csrf
                                 <input type="hidden" name="id_user" value="{{ auth()->id() }}">
@@ -90,6 +94,7 @@
                                     <input type="hidden" name="pelayanan" id="inputPelayanan">
                                     <span class="rating-label">Pelayanan</span>
                                 </div>
+                                <input type="hidden" name="average" id="inputAverage">
                                 <button type="submit" class="btn btn-primary mt-2">Simpan Rating</button>
                             </form>
                         </div>
@@ -100,7 +105,10 @@
                         <div class="card-body">
                             <h5 class="card-title">Lokasi</h5>
                             <p class="card-text">{{ $wisata->lokasi_wisata }}</p>
-                            <a href="#" class="btn btn-primary">Lihat Lokasi</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query={{ $wisata->latitude }},{{ $wisata->longitude }}"
+                                target="_blank" class="btn btn-primary">Lihat Lokasi
+                                <i class="bi bi-geo-fill"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -117,26 +125,66 @@
                         <div class="swiper-slide">
                             <div class="card">
                                 <img src="https://i.ibb.co/gSDP1Cp/noko-selayar.jpg" class="card-img-top" alt="Image 1">
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <p class="card-text">
+                                        Some quick example text.
+                                    </p>
+                                    <a href="#" class="btn btn-primary">Detail <i
+                                            data-feather="arrow-right"></i></a>
+                                </div>
                             </div>
                         </div>
                         <div class="swiper-slide">
                             <div class="card">
                                 <img src="https://i.ibb.co/gSDP1Cp/noko-selayar.jpg" class="card-img-top" alt="Image 1">
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <p class="card-text">
+                                        Some quick example text.
+                                    </p>
+                                    <a href="#" class="btn btn-primary">Detail <i
+                                            data-feather="arrow-right"></i></a>
+                                </div>
                             </div>
                         </div>
                         <div class="swiper-slide">
                             <div class="card">
                                 <img src="https://i.ibb.co/gSDP1Cp/noko-selayar.jpg" class="card-img-top" alt="Image 1">
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <p class="card-text">
+                                        Some quick example text.
+                                    </p>
+                                    <a href="#" class="btn btn-primary">Detail <i
+                                            data-feather="arrow-right"></i></a>
+                                </div>
                             </div>
                         </div>
                         <div class="swiper-slide">
                             <div class="card">
                                 <img src="https://i.ibb.co/gSDP1Cp/noko-selayar.jpg" class="card-img-top" alt="Image 1">
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <p class="card-text">
+                                        Some quick example text.
+                                    </p>
+                                    <a href="#" class="btn btn-primary">Detail <i
+                                            data-feather="arrow-right"></i></a>
+                                </div>
                             </div>
                         </div>
                         <div class="swiper-slide">
                             <div class="card">
                                 <img src="https://i.ibb.co/gSDP1Cp/noko-selayar.jpg" class="card-img-top" alt="Image 1">
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <p class="card-text">
+                                        Some quick example text.
+                                    </p>
+                                    <a href="#" class="btn btn-primary">Detail <i
+                                            data-feather="arrow-right"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -180,6 +228,17 @@
                 if (!$(e.target).closest('.dropdown').length) {
                     $('.dropdown-menu').removeClass('show');
                 }
+            });
+
+            $(document).ready(function() {
+                var averageRating = $('#rating').data('rating');
+
+                $("#rating").rateYo({
+                    rating: averageRating,
+                    readOnly: true
+                });
+
+                // $("#rating").append('<span style="margin-left: 5px;">' + averageRating + '</span>');
             });
         });
     </script>

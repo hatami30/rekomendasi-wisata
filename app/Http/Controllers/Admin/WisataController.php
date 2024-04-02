@@ -38,6 +38,8 @@ class WisataController extends Controller
             'id_kategori' => 'required',
             'nama_wisata' => 'required',
             'lokasi_wisata' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
             'desk_wisata' => 'required',
             'gambar_wisata' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
@@ -48,6 +50,8 @@ class WisataController extends Controller
             'id_kategori' => $request->input('id_kategori'),
             'nama_wisata' => $request->input('nama_wisata'),
             'lokasi_wisata' => $request->input('lokasi_wisata'),
+            'latitude' => $request->input('latitude'),
+            'longitude' => $request->input('longitude'),
             'desk_wisata' => $request->input('desk_wisata'),
             'gambar_wisata' => $gambarWisataPath,
         ]);
@@ -82,24 +86,30 @@ class WisataController extends Controller
             'id_kategori' => 'required',
             'nama_wisata' => 'required',
             'lokasi_wisata' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
             'desk_wisata' => 'required',
-            'gambar_wisata' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'gambar_wisata' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         $wisata = Wisata::findOrFail($id);
 
-        if ($request->hasFile('gambar_wisata')) {
-            Storage::delete('public/' . $wisata->gambar_wisata);
-            $gambarWisataPath = $request->file('gambar_wisata')->store('wisata_photos', 'public');
-            $wisata->gambar_wisata = $gambarWisataPath;
-        }
-
-        $wisata->update([
+        $attributes = [
             'id_kategori' => $request->input('id_kategori'),
             'nama_wisata' => $request->input('nama_wisata'),
             'lokasi_wisata' => $request->input('lokasi_wisata'),
+            'latitude' => $request->input('latitude'),
+            'longitude' => $request->input('longitude'),
             'desk_wisata' => $request->input('desk_wisata'),
-        ]);
+        ];
+
+        if ($request->hasFile('gambar_wisata')) {
+            Storage::delete('public/' . $wisata->gambar_wisata);
+            $gambarWisataPath = $request->file('gambar_wisata')->store('wisata_photos', 'public');
+            $attributes['gambar_wisata'] = $gambarWisataPath;
+        }
+
+        $wisata->update($attributes);
 
         return redirect()->route('admin.wisata.index')->with('success', 'Data wisata berhasil diperbarui.');
     }

@@ -16,6 +16,18 @@
                                 style="object-fit: cover; width: 100%; height: 200px;" alt="{{ $wisata->nama_wisata }}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $wisata->nama_wisata }}</h5>
+                                @php
+                                    $averageRating = $wisata->rating()->avg('average');
+                                @endphp
+                                <div class="d-flex flex-column mb-5">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-star-fill text-warning me-1 mt-3" style="font-size: 1rem;"></i>
+                                        <div class="me-1 mt-3">{{ number_format($averageRating, 1) }}</div>
+                                    </div>
+                                    <div class="card-text d-inline-block py-2 px-4 rounded-pill mt-4"
+                                        style="background-color: #e6e6e6; width: fit-content;">
+                                        {{ $wisata->kategori->nama_kategori }}</div>
+                                </div>
                                 <a href="{{ route('wisata.detail', $wisata->id) }}" class="btn btn-primary">Detail <i
                                         data-feather="arrow-right"></i></a>
                             </div>

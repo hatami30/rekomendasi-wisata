@@ -53,6 +53,26 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="latitude" class="form-label">Latitude</label>
+                            <input type="text" class="form-control" id="latitude" name="latitude"
+                                value="{{ isset($wisata) ? $wisata->latitude : old('latitude') }}" required
+                                placeholder="Masukkan Latitude">
+                            @error('latitude')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="longitude" class="form-label">Longitude</label>
+                            <input type="text" class="form-control" id="longitude" name="longitude"
+                                value="{{ isset($wisata) ? $wisata->longitude : old('longitude') }}" required
+                                placeholder="Masukkan Longitude">
+                            @error('longitude')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
                             <label for="desk_wisata" class="form-label">Deskripsi Wisata</label>
                             <textarea class="form-control" id="desk_wisata" name="desk_wisata" rows="3" required
                                 placeholder="Masukkan Deskripsi Wisata">{{ isset($wisata) ? $wisata->desk_wisata : old('desk_wisata') }}</textarea>
@@ -76,7 +96,14 @@
 
                         <div class="mb-3">
                             <label for="gambar_wisata" class="form-label">Gambar Wisata</label>
+                            @isset($wisata)
+                                <img src="{{ asset('storage/' . $wisata->gambar_wisata) }}" alt="Gambar Wisata"
+                                    class="img-fluid mb-2 rounded" style="max-width: 200px;">
+                            @endisset
                             <input type="file" class="form-control" id="gambar_wisata" name="gambar_wisata">
+                            @error('gambar_wisata')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <a href="{{ route('admin.wisata.index') }}" class="btn btn-sm btn-primary">Kembali</a>

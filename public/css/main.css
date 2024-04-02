@@ -483,6 +483,20 @@ section.wisata-detail {
     margin-bottom: 20px;
 }
 
+#ratingContainer {
+    display: flex;
+    align-items: center;
+}
+
+#rating {
+    margin-right: 5px;
+}
+
+#ratingText {
+    margin-left: 5px;
+    font-weight: bold;
+}
+
 /*------------------------ 
 Swiper
 ------------------------*/

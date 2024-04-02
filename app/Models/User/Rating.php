@@ -21,6 +21,7 @@ class Rating extends Model
         'kebersihan',
         'keindahan',
         'pelayanan',
+        'average',
     ];
 
     public function user()
@@ -40,13 +41,15 @@ class Rating extends Model
         $numCriteria = 0;
 
         foreach ($criteria as $criterion) {
-            if ($this->attributes[$criterion]) {
-                $totalRating += $this->attributes[$criterion];
+            if (!empty($this->{$criterion})) {
+                $totalRating += $this->{$criterion};
                 $numCriteria++;
             }
         }
 
-        return ($numCriteria > 0) ? $totalRating / $numCriteria : 0;
+        $average = ($numCriteria > 0) ? $totalRating / $numCriteria : 0;
+
+        return round($average, 1);
     }
 
     public function setCriteriaRatings($ratings)

@@ -21,6 +21,8 @@
                             <th>No</th>
                             <th>Nama Wisata</th>
                             <th>Lokasi</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
                             <th>Deskripsi</th>
                             <th>Kategori</th>
                             <th>Gambar</th>
@@ -33,6 +35,8 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td class="text-nowrap">{{ $wisata->nama_wisata }}</td>
                                 <td>{{ $wisata->lokasi_wisata }}</td>
+                                <td>{{ $wisata->latitude }}</td>
+                                <td>{{ $wisata->longitude }}</td>
                                 <td>{{ $wisata->desk_wisata }}</td>
                                 <td>{{ $wisata->kategori->nama_kategori }}</td>
                                 <td class="w-auto">

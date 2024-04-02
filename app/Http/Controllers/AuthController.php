@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Facades\Auth;
@@ -116,7 +115,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout(Request $request): RedirectResponse
+    public function logout(): RedirectResponse
     {
         $previousUrl = URL::previous();
         Session::put('previousUrl', $previousUrl);

@@ -64,6 +64,7 @@ class WisataDetailController extends Controller
         $rating->kebersihan = $request->kebersihan;
         $rating->keindahan = $request->keindahan;
         $rating->pelayanan = $request->pelayanan;
+        $rating->average = round($rating->calculateAverageRating(), 1);
         $rating->save();
 
         return redirect()->back()->with('success', 'Rating berhasil disimpan.');
