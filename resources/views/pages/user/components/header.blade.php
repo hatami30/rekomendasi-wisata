@@ -25,8 +25,8 @@
                             href='{{ url('/about') }}'>Tentang</a>
                     </li>
                     <li class="nav-item">
-                        <a class='nav-link {{ Request::is('rekomendasi-wisata') ? 'active' : '' }}'
-                            href='{{ url('/rekomendasi-wisata') }}'>Rekomendasi</a>
+                        <a class='nav-link {{ Request::is('wisata') ? 'active' : '' }}'
+                            href='{{ url('/wisata') }}'>Wisata</a>
                     </li>
                 </ul>
                 <div class="ml-auto">

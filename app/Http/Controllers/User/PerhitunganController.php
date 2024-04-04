@@ -27,7 +27,7 @@ class PerhitunganController extends Controller
         // Menghitung rekomendasi item untuk pengguna berdasarkan rating dan similaritas
         $recommendations = $this->calculateRecommendations($userRatings, $similarities, $unratedWisata);
         
-        return view('pages.user.rekomendasi-wisata', compact('recommendations')); // Kembalikan tampilan dengan rekomendasi
+        // return view('pages.user.wisata', compact('recommendations')); // Kembalikan tampilan dengan rekomendasi
     }
 
     // Fungsi untuk menghitung similaritas antara rating pengguna saat ini dengan rating dari pengguna lain

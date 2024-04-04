@@ -8,7 +8,7 @@ use App\Models\Admin\Kategori;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
-class WisataController extends Controller
+class AdminWisataController extends Controller
 {
     /**
      * Display a listing of the resource.

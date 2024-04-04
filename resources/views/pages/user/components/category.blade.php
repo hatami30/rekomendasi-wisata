@@ -2,7 +2,7 @@
     <div class="holder">
         <ul class="slider">
             <li>
-                <a href="{{ route('rekomendasi.wisata.filter', 'pantai') }}">
+                <a href="{{ route('wisata.filter', 'pantai') }}">
                     <figure>
                         <div class="img-holder">
                             <img class="pantai" data-name="pantai" title="pantai"
@@ -14,7 +14,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('rekomendasi.wisata.filter', 'danau') }}">
+                <a href="{{ route('wisata.filter', 'danau') }}">
                     <figure>
                         <div class="img-holder">
                             <img class="danau" data-name="danau" title="danau"
@@ -26,7 +26,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('rekomendasi.wisata.filter', 'air-terjun') }}">
+                <a href="{{ route('wisata.filter', 'air-terjun') }}">
                     <figure>
                         <div class="img-holder">
                             <img class="air-terjun" data-name="air-terjun" title="air-terjun"
@@ -38,7 +38,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('rekomendasi.wisata.filter', 'air-panas') }}">
+                <a href="{{ route('wisata.filter', 'air-panas') }}">
                     <figure>
                         <div class="img-holder">
                             <img class="air-panas" data-name="air-panas" title="air-panas"
@@ -50,7 +50,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('rekomendasi.wisata.filter', 'mangrove') }}">
+                <a href="{{ route('wisata.filter', 'mangrove') }}">
                     <figure>
                         <div class="img-holder">
                             <img class="mangrove" data-name="mangrove" title="mangrove"
@@ -62,7 +62,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('rekomendasi.wisata.filter', 'penangkaran') }}">
+                <a href="{{ route('wisata.filter', 'penangkaran') }}">
                     <figure>
                         <div class="img-holder">
                             <img class="penangkaran" data-name="penangkaran" title="penangkaran"
@@ -74,7 +74,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('rekomendasi.wisata.filter', 'makam') }}">
+                <a href="{{ route('wisata.filter', 'makam') }}">
                     <figure>
                         <div class="img-holder">
                             <img class="makam" data-name="makam" title="makam"

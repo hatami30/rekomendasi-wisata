@@ -9,7 +9,7 @@
                     <h1>Selamat datang di Pulau Bawean</h1>
                 </div>
                 <div class="cta-home text-center">
-                    <a class='btn btn-primary shadow-none d-block d-md-inline-block' href='{{ url('/rekomendasi-wisata') }}'>Memulai
+                    <a class='btn btn-primary shadow-none d-block d-md-inline-block' href='{{ url('/wisata') }}'>Memulai
                         &nbsp; <i data-feather="arrow-right"></i></a>
                     <a class='btn btn-secondary shadow-none d-block d-md-inline-block' href='{{ url('/about') }}'>Tentang</a>
                 </div>

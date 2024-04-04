@@ -14,6 +14,13 @@ use App\Http\Controllers;
 |
 */
 
+// public
+Route::get('/', [Controllers\User\HomeController::class, 'index'])->name('home');
+Route::get('/about', [Controllers\User\AboutController::class, 'index'])->name('about');
+Route::get('/wisata', [Controllers\User\UserWisataController::class, 'index'])->name('wisata');
+Route::get('/wisata/{slug}', [Controllers\User\UserWisataController::class, 'filterByCategory'])->name('wisata.filter');
+Route::get('/wisata-bawean/{id}', [Controllers\User\WisataDetailController::class, 'show'])->name('wisata.detail'); 
+
 // auth
 Route::get('/register', [Controllers\AuthController::class, 'showRegistrationForm'])->name('register.form');
 Route::post('/register', [Controllers\AuthController::class, 'register'])->name('register');
@@ -23,19 +30,19 @@ Route::post('/logout', [Controllers\AuthController::class, 'logout'])->name('log
 
 Route::middleware(['auth'])->group(function () {
     // admin
-    Route::middleware(['App\Http\Middleware\CheckRole:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
         // dashboard
         Route::get('/dashboard', [Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
         // wisata
         Route::prefix('wisata')->name('wisata.')->group(function () {
-            Route::get('/', [Controllers\Admin\WisataController::class, 'index'])->name('index');
-            Route::get('/create', [Controllers\Admin\WisataController::class, 'create'])->name('create');
-            Route::post('/store', [Controllers\Admin\WisataController::class, 'store'])->name('store');
-            Route::get('/edit/{id}', [Controllers\Admin\WisataController::class, 'edit'])->name('edit');
-            Route::put('/update/{id}', [Controllers\Admin\WisataController::class, 'update'])->name('update');
-            Route::delete('/delete/{id}', [Controllers\Admin\WisataController::class, 'destroy'])->name('delete');
+            Route::get('/', [Controllers\Admin\AdminWisataController::class, 'index'])->name('index');
+            Route::get('/create', [Controllers\Admin\AdminWisataController::class, 'create'])->name('create');
+            Route::post('/store', [Controllers\Admin\AdminWisataController::class, 'store'])->name('store');
+            Route::get('/edit/{id}', [Controllers\Admin\AdminWisataController::class, 'edit'])->name('edit');
+            Route::put('/update/{id}', [Controllers\Admin\AdminWisataController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [Controllers\Admin\AdminWisataController::class, 'destroy'])->name('delete');
         });
 
         // kategori
@@ -50,12 +57,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // user
-    Route::middleware(['App\Http\Middleware\CheckRole:user'])->prefix('user')->name('user.')->group(function () {
-        Route::get('/', [Controllers\User\HomeController::class, 'index'])->name('home');
-        Route::get('/about', [Controllers\User\AboutController::class, 'index'])->name('about');
-        Route::get('/rekomendasi-wisata', [Controllers\User\RekomendasiWisataController::class, 'index'])->name('rekomendasi.wisata');
-        Route::get('/rekomendasi-wisata/{slug}', [Controllers\User\RekomendasiWisataController::class, 'filterByCategory'])->name('rekomendasi.wisata.filter');
-        Route::get('/wisata/{id}', [Controllers\User\WisataDetailController::class, 'show'])->name('wisata.detail'); 
-        Route::post('/wisata/rating', [Controllers\User\WisataDetailController::class, 'store'])->name('wisata.rating.store');
+    Route::middleware(['role:user', 'auth.user'])->group(function () {
+        Route::post('/wisata/rating', [Controllers\User\WisataDetailController::class, 'store'])->name('wisata.rating');
     });
 });

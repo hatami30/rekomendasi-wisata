@@ -55,7 +55,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="ratingDropdown"
                             style="position: absolute; max-height: 80px; overflow-y: auto; z-index: 1000;">
-                            <form action="{{ route('user.wisata.rating.store') }}" method="post">
+                            <form action="{{ route('wisata.rating') }}" method="post">
                                 @csrf
                                 <input type="hidden" name="id_user" value="{{ auth()->id() }}">
                                 <input type="hidden" name="id_wisata" value="{{ $wisata->id }}">

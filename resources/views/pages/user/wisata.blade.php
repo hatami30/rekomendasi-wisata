@@ -12,7 +12,7 @@
                 @foreach ($wisatas as $wisata)
                     <div class="col-md-3 mb-4">
                         <div class="card h-100">
-                            <img src="{{ asset('storage/' . $wisata->gambar_wisata) }}" class="card-img-top img-fluid rounded"
+                            <img src="{{ asset('storage/' . $wisata->gambar_wisata) }}" class="card-img-top img-fluid"
                                 style="object-fit: cover; width: 100%; height: 200px;" alt="{{ $wisata->nama_wisata }}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $wisata->nama_wisata }}</h5>

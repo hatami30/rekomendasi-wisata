@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Admin\Kategori;
 use App\Http\Controllers\Controller;
 
-class RekomendasiWisataController extends Controller
+class UserWisataController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class RekomendasiWisataController extends Controller
     public function index()
     {
         $wisatas = Wisata::paginate(12);
-        return view('pages.user.rekomendasi-wisata', compact('wisatas'));
+        return view('pages.user.wisata', compact('wisatas'));
     }
 
     /**
@@ -72,7 +72,7 @@ class RekomendasiWisataController extends Controller
 
         if ($kategori) {
             $wisatas = Wisata::where('id_kategori', $kategori->id)->paginate(12);
-            return view('pages.user.rekomendasi-wisata', compact('wisatas'));
+            return view('pages.user.wisata', compact('wisatas'));
         } else {
             abort(404);
         }
