@@ -1,5 +1,7 @@
 @extends('pages.admin.components.main')
 
+@section('title', 'Kategori')
+
 @section('heading')
     <h3>Data Kategori</h3>
 @endsection

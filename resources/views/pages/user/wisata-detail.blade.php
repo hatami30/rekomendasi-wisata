@@ -1,5 +1,7 @@
 @extends('pages.user.components.main')
 
+@section('title', $wisata->nama_wisata)
+
 @section('content')
     <section class="wisata-detail">
         <div class="container">

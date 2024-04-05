@@ -1,5 +1,7 @@
 @extends('pages.admin.components.main')
 
+@section('title', 'Wisata')
+
 @section('heading')
     <h3>
         @isset($wisata)

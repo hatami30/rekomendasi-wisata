@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('pages.auth.components.main')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    @include('layouts.app')
-</head>
+@section('title', 'Register')
 
-<body>
-    <div id="auth">
+@section('content')
+    <section id="auth">
         <div class="row h-100">
             <div class="col-lg-5 col-12">
                 <div id="auth-left">
@@ -23,8 +17,7 @@
                         @csrf
 
                         <div class="form-group position-relative has-icon-left mb-4">
-                            <input type="text" name="email" class="form-control form-control-xl"
-                                placeholder="Email">
+                            <input type="text" name="email" class="form-control form-control-xl" placeholder="Email">
                             <div class="form-control-icon">
                                 <i class="bi bi-envelope"></i>
                             </div>
@@ -57,8 +50,8 @@
                             class="btn btn-custom btn-block btn-lg shadow-lg mt-5">Daftar</button>
                     </form>
                     <div class="text-center mt-5 text-lg fs-4">
-                        <p class='text-gray-600'>Sudah punya akun? <a href="./login"
-                                class="font-bold txt-color">Masuk</a>.</p>
+                        <p class='text-gray-600'>Sudah punya akun? <a href="./login" class="font-bold txt-color">Masuk</a>.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -67,10 +60,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+@endsection
 
-    @include('includes.script')
-
+@section('script')
     <script>
         document.getElementById('submitBtn').addEventListener('click', async function(event) {
             event.preventDefault();
@@ -129,7 +122,4 @@
             }
         });
     </script>
-
-</body>
-
-</html>
+@endsection

@@ -1,5 +1,7 @@
 @extends('pages.user.components.main')
 
+@section('title', 'Tentang')
+
 @section('content')
     <section class="about">
         <div class="container">

@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('pages.auth.components.main')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    @include('layouts.app')
-</head>
+@section('title', 'Login')
 
-<body>
-    <div id="auth">
+@section('content')
+    <section id="auth">
         <div class="row h-100">
             <div class="col-lg-5 col-12">
                 <div id="auth-left">
@@ -22,8 +16,7 @@
                     <form action="{{ url('/login') }}" method="POST" id="loginForm">
                         @csrf
                         <div class="form-group position-relative has-icon-left mb-4">
-                            <input type="text" name="email" class="form-control form-control-xl"
-                                placeholder="Email">
+                            <input type="text" name="email" class="form-control form-control-xl" placeholder="Email">
                             <div class="form-control-icon">
                                 <i class="bi bi-envelope"></i>
                             </div>
@@ -37,13 +30,16 @@
                                 </button>
                             </div>
                         </div>
+                        @if (session('error'))
+                            <div class="alert alert-danger mt-3">
+                                {{ session('error') }}
+                            </div>
+                        @endif
                         <button class="btn btn-custom btn-block btn-lg shadow-lg mt-5" type="submit">Masuk</button>
-                    </form>
-                    @if (session('error'))
-                        <div class="alert alert-danger mt-3">
-                            {{ session('error') }}
+                        <div class="text-center mt-3">
+                            <a href="{{ route('forgot.form') }}" class="text-gray-600">Lupa sandi?</a>
                         </div>
-                    @endif
+                    </form>
                     <div class="text-center mt-5 text-lg fs-4">
                         <p class="text-gray-600">Belum mempunyai akun? <a href="./register"
                                 class="font-bold txt-color">Daftar</a>.</p>
@@ -55,10 +51,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+@endsection
 
-    @include('includes.script')
-
+@section('script')
     <script>
         document.getElementById('togglePassword').addEventListener('click', function() {
             var passwordInput = document.querySelector('input[name="password"]');
@@ -75,7 +71,4 @@
             }
         });
     </script>
-
-</body>
-
-</html>
+@endsection

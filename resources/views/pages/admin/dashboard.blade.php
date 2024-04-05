@@ -1,5 +1,7 @@
 @extends('pages.admin.components.main')
 
+@section('title', 'Home')
+
 @section('heading')
     <h3>Dashboard</h3>
 @endsection

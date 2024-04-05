@@ -10,22 +10,10 @@
 </head>
 
 <body>
-    @include('pages.user.components.header')
-
-    <main>
-        @yield('content')
-    </main>
-
-    @include('pages.user.components.footer')
+    @yield('content')
 
     @include('includes.script')
-    <script>
-        $(document).ready(function() {
-            $(".navbar-toggler").on("click", function() {
-                $(".navbar-collapse").slideToggle();
-            });
-        });
-    </script>
+
     @yield('script')
 </body>
 

@@ -1,5 +1,7 @@
 @extends('pages.user.components.main')
 
+@section('title', 'Wisata')
+
 @include('pages.user.components.category')
 
 @section('content')

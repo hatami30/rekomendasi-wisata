@@ -27,6 +27,10 @@ Route::post('/register', [Controllers\AuthController::class, 'register'])->name(
 Route::get('/login', [Controllers\AuthController::class, 'showLoginForm'])->name('login.form');
 Route::post('/login', [Controllers\AuthController::class, 'login'])->name('login');
 Route::post('/logout', [Controllers\AuthController::class, 'logout'])->name('logout');
+Route::get('/forgot', [Controllers\AuthController::class, 'forgotForm'])->name('forgot.form');
+Route::post('/forgot', [Controllers\AuthController::class, 'forgotPost'])->name('forgot.post');
+Route::get('/reset/{token}', [Controllers\AuthController::class, 'resetForm'])->name('reset.form');
+Route::post('/reset/{token}', [Controllers\AuthController::class, 'resetPost'])->name('reset.post');
 
 Route::middleware(['auth'])->group(function () {
     // admin

@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Mail\ResetPasswordMail;
+use App\Models\PasswordResetToken;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
@@ -123,5 +128,87 @@ class AuthController extends Controller
         Auth::logout();
 
         return Redirect::to($previousUrl);
+    }
+
+    public function forgotForm()
+    {
+        return view('pages.auth.forgot');
+    }
+
+    public function forgotPost(Request $request)
+    {
+        $customMessage = [
+            'email.required'    => 'Email tidak boleh kosong',
+            'email.email'       => 'Email tidak valid',
+            'email.exists'      => 'Email tidak terdaftar di database',
+        ];
+
+        $request->validate([
+            'email' => 'required|email|exists:users',
+        ], $customMessage);
+    
+        $user = User::where('email', $request->email)->first();
+    
+        if (!$user) {
+            return redirect()->back()->with('error', 'Email tidak ditemukan');
+        }
+    
+        $token = Str::random(60);
+    
+        PasswordResetToken::updateOrCreate(
+            ['email' => $user->email],
+            [
+                'email' => $user->email,
+                'token' => $token,
+                'created_at' => Carbon::now()
+            ]
+        );
+    
+        Mail::to($user->email)->send(new ResetPasswordMail($token));
+    
+        return redirect()->back()->with('message', 'Email pemulihan kata sandi telah dikirim.');
+    }
+
+    public function resetForm($token)
+    {
+        $tokenData = PasswordResetToken::where('token', $token)->first();
+
+        if (!$tokenData) {
+            return redirect()->route('forgot.form')->with('error', 'Token tidak valid');
+        }
+
+        return view('pages.auth.reset', ['token' => $token]);
+    }
+
+    public function resetPost(Request $request, $token) 
+    {
+        $customMessage = [
+            'password.required' => 'Password tidak boleh kosong',
+            'password.min'      => 'Password minimal 8 karakter',
+        ];
+
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8',
+        ], $customMessage);
+    
+        $tokenData = PasswordResetToken::where('token', $token)->first();
+    
+        if (!$tokenData) {
+            return redirect()->back()->with('error', 'Token tidak valid');
+        }
+    
+        $user = User::where('email', $request->email)->first();
+    
+        if (!$user) {
+            return redirect()->back()->with('error', 'Email tidak valid');
+        }
+    
+        $user->password = Hash::make($request->password);
+        $user->save();
+    
+        $tokenData->delete();
+    
+        return redirect()->route('login')->with('message', 'Kata sandi berhasil direset. Silakan login.');
     }
 }

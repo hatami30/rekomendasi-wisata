@@ -1,5 +1,7 @@
 @extends('pages.user.components.main')
 
+@section('title', 'Home')
+
 @section('content')
     <!-- hero section -->
     <section class="jumbotron jumbotron-fluid">
