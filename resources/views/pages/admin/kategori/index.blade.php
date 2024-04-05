@@ -15,6 +15,11 @@
             </div>
 
             <div class="card-body table-responsive">
+                @if (session('success'))
+                    <div class="alert alert-success mt-2">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <table id="kategoriTable" class="table table-striped" style="width:100%">
                     <thead>
                         <tr>

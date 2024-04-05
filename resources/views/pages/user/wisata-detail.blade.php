@@ -237,8 +237,6 @@
                     rating: averageRating,
                     readOnly: true
                 });
-
-                // $("#rating").append('<span style="margin-left: 5px;">' + averageRating + '</span>');
             });
         });
     </script>

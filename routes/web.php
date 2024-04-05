@@ -57,7 +57,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // user
-    Route::middleware(['role:user', 'auth.user'])->group(function () {
+    Route::middleware(['auth.user'])->group(function () {
         Route::post('/wisata/rating', [Controllers\User\WisataDetailController::class, 'store'])->name('wisata.rating');
     });
 });

@@ -32,7 +32,9 @@
                             <input type="password" name="password" class="form-control form-control-xl"
                                 placeholder="Password">
                             <div class="form-control-icon">
-                                <i class="bi bi-shield-lock"></i>
+                                <button type="button" id="togglePassword" class="btn btn-link p-0 m-0">
+                                    <i class="bi bi-eye"></i>
+                                </button>
                             </div>
                         </div>
                         <button class="btn btn-custom btn-block btn-lg shadow-lg mt-5" type="submit">Masuk</button>
@@ -57,6 +59,22 @@
 
     @include('includes.script')
 
+    <script>
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            var passwordInput = document.querySelector('input[name="password"]');
+            var icon = this.querySelector('i');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+    </script>
 
 </body>
 

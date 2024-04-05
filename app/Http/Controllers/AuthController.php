@@ -96,16 +96,16 @@ class AuthController extends Controller
 
     public function showLoginForm()
     {
-        // if (Auth::check()) {
-        //     $user = Auth::user();
-        //     $roles = [$user->role];
+        if (Auth::check()) {
+            $user = Auth::user();
+            $roles = [$user->role];
 
-        //     if (in_array('admin', $roles)) {
-        //         return redirect()->route('admin.dashboard');
-        //     } elseif (in_array('user', $roles)) {
-        //         return redirect()->route('user.dashboard');
-        //     }
-        // }
+            if (in_array('admin', $roles)) {
+                return redirect()->route('admin.dashboard');
+            } elseif (in_array('user', $roles)) {
+                return redirect()->route('wisata');
+            }
+        }
 
         return view('pages.auth.login');
     }
