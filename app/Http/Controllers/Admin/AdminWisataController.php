@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Admin\Wisata;
-use Illuminate\Http\Request;
 use App\Models\Admin\Kategori;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Controller;
 
 class AdminWisataController extends Controller
 {
@@ -17,6 +17,7 @@ class AdminWisataController extends Controller
     {
         $jumlahWisata = Wisata::count();
         $wisatas = Wisata::all();
+
         return view('pages.admin.wisata.index', compact('jumlahWisata', 'wisatas'));
     }
 
@@ -26,6 +27,7 @@ class AdminWisataController extends Controller
     public function create()
     {
         $kategoris = Kategori::all();
+
         return view('pages.admin.wisata.createOrUpdate', compact('kategoris'));
     }
 
@@ -74,6 +76,7 @@ class AdminWisataController extends Controller
     {
         $wisata = Wisata::findOrFail($id);
         $kategoris = Kategori::all();
+
         return view('pages.admin.wisata.createOrUpdate', compact('wisata', 'kategoris'));
     }
 

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\Admin\Wisata;
-use Illuminate\Http\Request;
 use App\Models\Admin\Kategori;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class UserWisataController extends Controller
@@ -15,6 +15,7 @@ class UserWisataController extends Controller
     public function index()
     {
         $wisatas = Wisata::paginate(12);
+        
         return view('pages.user.wisata', compact('wisatas'));
     }
 

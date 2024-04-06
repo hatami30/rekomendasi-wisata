@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Models\Admin\Kategori;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 
 class KategoriController extends Controller
@@ -15,6 +15,7 @@ class KategoriController extends Controller
     public function index()
     {
         $kategoris = Kategori::all();
+
         return view('pages.admin.kategori.index', compact('kategoris'));
     }
 
@@ -59,6 +60,7 @@ class KategoriController extends Controller
     public function edit(string $id)
     {
         $kategori = Kategori::findOrFail($id);
+
         return view('pages.admin.kategori.createOrUpdate', compact('kategori'));
     }
 

@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Mail\ResetPasswordMail;
 use App\Models\PasswordResetToken;
-use Illuminate\Support\Facades\URL;
+use App\Mail\ResetPasswordMail;
+use Carbon\Carbon;
 use Illuminate\Routing\UrlGenerator;
+use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;

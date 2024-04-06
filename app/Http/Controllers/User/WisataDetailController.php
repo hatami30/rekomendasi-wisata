@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Models\User\Rating;
 use App\Models\Admin\Wisata;
+use App\Models\User\Rating;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 

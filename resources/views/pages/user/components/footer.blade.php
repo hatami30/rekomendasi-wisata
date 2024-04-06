@@ -4,5 +4,5 @@
         <li class="nav-item"><a href='{{ url('/about') }}' class="nav-link px-2 text-body-secondary">Tentang</a></li>
         <li class="nav-item"><a href='{{ url('/wisata') }}' class="nav-link px-2 text-body-secondary">Wisata</a></li>
     </ul>
-    <p class="text-center text-body-secondary">© 2024 Wisata Bawean</p>
+    <p class="text-center text-body-secondary">© Wisata Bawean</p>
 </footer>
