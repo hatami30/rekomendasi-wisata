@@ -45,31 +45,43 @@
     <script>
         document.getElementById('forgotForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            var form = this;
-            var formData = new FormData(form);
 
-            axios.post(form.action, formData)
-                .then(function(response) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: response.data.message,
-                        showCancelButton: false,
-                        confirmButtonColor: '#9EB384',
-                        confirmButtonText: 'Cek email',
-                        allowOutsideClick: false,
-                    });
-                })
-                .catch(function(error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Something went wrong!',
-                        showCancelButton: false,
-                        confirmButtonColor: '#445434',
-                        confirmButtonText: 'OK',
-                    });
-                });
+            Swal.fire({
+                icon: 'info',
+                title: 'Processing...',
+                text: 'Please wait...',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                willOpen: () => {
+                    var form = event.target;
+                    var formData = new FormData(form);
+                    axios.post(form.action, formData)
+                        .then(function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: response.data.message,
+                                confirmButtonColor: '#9EB384',
+                                confirmButtonText: 'Check Email',
+                                allowOutsideClick: false,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/forgot';
+                                }
+                            });
+                        })
+                        .catch(function(error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                                confirmButtonColor: '#445434',
+                                confirmButtonText: 'OK',
+                                allowOutsideClick: false,
+                            });
+                        });
+                }
+            });
         });
     </script>
 @endsection
