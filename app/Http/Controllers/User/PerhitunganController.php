@@ -4,16 +4,27 @@ namespace App\Http\Controllers\User;
 
 use App\Models\Admin\Wisata;
 use App\Models\User\Rating;
+use App\Models\User\Prediction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class PerhitunganController extends Controller
 {
+    // Fungsi untuk menampilkan halaman dengan rekomendasi
+    public function showRecommendations()
+    {
+        // Panggil metode recommendItems() untuk mendapatkan rekomendasi wisata
+        $recommendations = $this->recommendItems();
+
+        // Teruskan data rekomendasi ke view
+        return view('pages.user.wisata-detail', compact('recommendations'));
+    }
+    
     // Fungsi untuk merekomendasikan item kepada pengguna
-    public function recommendItems(Request $request)
+    public function recommendItems()
     {
         // Mengambil semua rating yang diberikan oleh pengguna saat ini
-        $userRatings = Rating::where('id_user', auth()->id())->pluck('rating', 'id_wisata')->toArray();
+        $userRatings = Rating::where('id_user', auth()->id())->pluck('average', 'id_wisata')->toArray();
         
         // Mengambil semua rating dari pengguna lain
         $allRatings = Rating::where('id_user', '!=', auth()->id())->get();
@@ -27,7 +38,8 @@ class PerhitunganController extends Controller
         // Menghitung rekomendasi item untuk pengguna berdasarkan rating dan similaritas
         $recommendations = $this->calculateRecommendations($userRatings, $similarities, $unratedWisata);
         
-        // return view('pages.user.wisata', compact('recommendations')); // Kembalikan tampilan dengan rekomendasi
+        // Tampilkan rekomendasi
+        return $recommendations;
     }
 
     // Fungsi untuk menghitung similaritas antara rating pengguna saat ini dengan rating dari pengguna lain
@@ -40,7 +52,7 @@ class PerhitunganController extends Controller
             $otherUserId = $otherUserRating->id_user;
             
             // Ambil rating pengguna lain
-            $otherUserRatings = Rating::where('id_user', $otherUserId)->pluck('rating', 'id_wisata')->toArray();
+            $otherUserRatings = Rating::where('id_user', $otherUserId)->pluck('average', 'id_wisata')->toArray();
             
             // Hitung similaritas menggunakan korelasi Pearson
             $similarity = $this->pearsonCorrelation($userRatings, $otherUserRatings);
@@ -54,6 +66,12 @@ class PerhitunganController extends Controller
     private function pearsonCorrelation($ratings1, $ratings2)
     {
         $commonItems = array_intersect_key($ratings1, $ratings2);
+        $n = count($commonItems);
+
+        // Hitung rata-rata rating
+        $mean1 = array_sum($ratings1) / $n;
+        $mean2 = array_sum($ratings2) / $n;
+
         $sumProducts = 0;
         $sumSquared1 = 0;
         $sumSquared2 = 0;
@@ -62,24 +80,25 @@ class PerhitunganController extends Controller
         foreach ($commonItems as $itemId => $rating1) {
             $rating2 = $ratings2[$itemId];
             
-            // Hitung nilai-nilai untuk korelasi Pearson
-            $sumProducts += ($rating1 * $rating2);
-            $sumSquared1 += pow($rating1, 2);
-            $sumSquared2 += pow($rating2, 2);
+            // Hitung deviasi dari rata-rata
+            $deviation1 = $rating1 - $mean1;
+            $deviation2 = $rating2 - $mean2;
+
+            // Hitung jumlah produk rating untuk korelasi Pearson
+            $sumProducts += $deviation1 * $deviation2;
+            $sumSquared1 += pow($deviation1, 2);
+            $sumSquared2 += pow($deviation2, 2);
         }
 
         // Hitung korelasi Pearson
-        $numerator = ($sumProducts - (array_sum($ratings1) * array_sum($ratings2) / count($commonItems)));
-        $denominator = sqrt(($sumSquared1 - pow(array_sum($ratings1), 2) / count($ratings1)) * ($sumSquared2 - pow(array_sum($ratings2), 2) / count($ratings2)));
-
-        if ($denominator == 0) {
-            return 0; // Menghindari pembagian dengan nol
+        $correlation = 0;
+        if ($sumSquared1 != 0 && $sumSquared2 != 0) {
+            $correlation = $sumProducts / sqrt($sumSquared1 * $sumSquared2);
         }
 
-        $correlation = $numerator / $denominator; // Hitung korelasi Pearson
-
-        return $correlation; // Kembalikan korelasi Pearson
+        return $correlation;
     }
+
 
     // Fungsi untuk menghitung rekomendasi item
     private function calculateRecommendations($userRatings, $similarities, $unratedWisata)

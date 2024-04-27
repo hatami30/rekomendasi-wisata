@@ -66,7 +66,7 @@
                 </li>
 
                 <li class="sidebar-item {{ request()->segment('2') == 'peringkat' ? 'active' : '' }}">
-                    <a href="{{ route('admin.dashboard') }}" class='sidebar-link'>
+                    <a href="{{ route('admin.peringkat.index') }}" class='sidebar-link'>
                         <i class="bi bi-star"></i>
                         <span>Peringkat</span>
                     </a>

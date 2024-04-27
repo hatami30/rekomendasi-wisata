@@ -124,71 +124,39 @@
                 <h3 class="text-center mb-4" style="color: #445434; font-weight: 600">Rekomendasi Lainnya</h3>
                 <div class="swiper mySwiper">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="card">
-                                <img src="https://i.ibb.co/gSDP1Cp/noko-selayar.jpg" class="card-img-top" alt="Image 1">
-                                <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">
-                                        Some quick example text.
-                                    </p>
-                                    <a href="#" class="btn btn-primary">Detail <i
-                                            data-feather="arrow-right"></i></a>
+                        @foreach ($recommendations as $recommendation)
+                            <div class="swiper-slide">
+                                <div class="card">
+                                    @if (!empty($recommendation['wisata']) && is_object($recommendation['wisata']))
+                                        <img src="{{ asset('storage/' . $recommendation['wisata']->gambar_wisata) }}"
+                                            class="card-img-top img-fluid"
+                                            style="object-fit: cover; width: 100%; height: 200px;"
+                                            alt="{{ $recommendation['wisata']->nama_wisata }}">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ $recommendation['wisata']->nama_wisata }}</h5>
+                                            @php
+                                                $averageRating = $recommendation['wisata']->rating()->avg('average');
+                                            @endphp
+                                            <div class="d-flex flex-column mb-5">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="bi bi-star-fill text-warning me-1 mt-3"
+                                                        style="font-size: 1rem;"></i>
+                                                    <div class="me-1 mt-3">{{ number_format($averageRating, 1) }}</div>
+                                                </div>
+                                                <div class="card-text d-inline-block py-2 px-4 rounded-pill mt-4"
+                                                    style="background-color: #e6e6e6; width: fit-content;">
+                                                    {{ $recommendation['wisata']->kategori->nama_kategori }}
+                                                </div>
+                                            </div>
+                                            <a href="{{ route('wisata.detail', ['id' => $recommendation['wisata']->id]) }}"
+                                                class="btn btn-primary">Detail <i data-feather="arrow-right"></i></a>
+                                        </div>
+                                    @else
+                                        <p>No recommendation available</p>
+                                    @endif
                                 </div>
                             </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="card">
-                                <img src="https://i.ibb.co/gSDP1Cp/noko-selayar.jpg" class="card-img-top" alt="Image 1">
-                                <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">
-                                        Some quick example text.
-                                    </p>
-                                    <a href="#" class="btn btn-primary">Detail <i
-                                            data-feather="arrow-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="card">
-                                <img src="https://i.ibb.co/gSDP1Cp/noko-selayar.jpg" class="card-img-top" alt="Image 1">
-                                <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">
-                                        Some quick example text.
-                                    </p>
-                                    <a href="#" class="btn btn-primary">Detail <i
-                                            data-feather="arrow-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="card">
-                                <img src="https://i.ibb.co/gSDP1Cp/noko-selayar.jpg" class="card-img-top" alt="Image 1">
-                                <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">
-                                        Some quick example text.
-                                    </p>
-                                    <a href="#" class="btn btn-primary">Detail <i
-                                            data-feather="arrow-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="card">
-                                <img src="https://i.ibb.co/gSDP1Cp/noko-selayar.jpg" class="card-img-top" alt="Image 1">
-                                <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">
-                                        Some quick example text.
-                                    </p>
-                                    <a href="#" class="btn btn-primary">Detail <i
-                                            data-feather="arrow-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     <div class="swiper-pagination"></div>
                 </div>
