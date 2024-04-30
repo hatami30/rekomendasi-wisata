@@ -48,7 +48,7 @@
                         {{ $wisata->desk_wisata }}</p>
                     <div class="mb-3" id="ratingContainer">
                         <div id="rating" data-rating="{{ $averageRating }}"></div>
-                        <span id="ratingText">{{ $averageRating }}</span>
+                        <span id="ratingText">{{ number_format($averageRating, 1) }}</span>
                     </div>
                     <div class="dropdown" style="position: relative;">
                         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -57,7 +57,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="ratingDropdown"
                             style="position: absolute; max-height: 80px; overflow-y: auto; z-index: 1000;">
-                            <form action="{{ route('wisata.rating') }}" method="post">
+                            <form action="{{ route('perhitungan.store') }}" method="post">
                                 @csrf
                                 <input type="hidden" name="id_user" value="{{ auth()->id() }}">
                                 <input type="hidden" name="id_wisata" value="{{ $wisata->id }}">
@@ -120,7 +120,7 @@
                     {{ session('error') }}
                 </div>
             @endif
-            <div class="container mt-5">
+            {{-- <div class="container mt-5">
                 <h3 class="text-center mb-4" style="color: #445434; font-weight: 600">Rekomendasi Lainnya</h3>
                 <div class="swiper mySwiper">
                     <div class="swiper-wrapper">
@@ -160,7 +160,7 @@
                     </div>
                     <div class="swiper-pagination"></div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </section>
 @endsection

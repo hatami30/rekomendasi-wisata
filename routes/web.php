@@ -77,7 +77,8 @@ Route::middleware(['auth'])->group(function () {
 
     // user
     Route::middleware(['auth.user'])->group(function () {
-        Route::post('/wisata/rating', [Controllers\User\WisataDetailController::class, 'store'])->name('wisata.rating');
+        // Route::post('/wisata/rating', [Controllers\User\WisataDetailController::class, 'store'])->name('wisata.rating');
+        Route::post('/perhitungan', [Controllers\PerhitunganController::class, 'store'])->name('perhitungan.store');
         // Route::post('/similarities/save', [Controllers\User\WisataDetailController::class, 'saveSimilarities'])->name('similarities.save');
         // Route::post('/predictions/save', [Controllers\User\WisataDetailController::class, 'savePredictions'])->name('predictions.save');
     });

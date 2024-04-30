@@ -25,4 +25,15 @@ class Similarity extends Model
     {
         return $this->belongsTo(Wisata::class, 'id_wisata2');
     }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($similarity) {
+            if ($similarity->similarity < 0 || $similarity->similarity > 1) {
+                throw new \Exception("Similarity value must be between 0 and 1.");
+            }
+        });
+    }
 }

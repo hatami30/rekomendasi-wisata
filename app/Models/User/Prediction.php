@@ -33,7 +33,6 @@ class Prediction extends Model
         $weightedSum = 0;
         $sumOfWeights = 0;
 
-        // Iterasi melalui semua pengguna dan menghitung bobot total
         foreach ($similarities as $otherUserId => $similarity) {
             $otherUserRating = Rating::where('id_user', $otherUserId)
                 ->where('id_wisata', $wisataId)
@@ -44,20 +43,19 @@ class Prediction extends Model
 
                 foreach ($otherUserRatings as $category => $rating) {
                     if ($category != 'id_user' && $category != 'id_wisata') {
-                        // Hitung jumlah bobot dan bobot terponderasi
-                        $weightedSum += $similarity * ($rating - $userRatings[$otherUserId][$category]);
-                        $sumOfWeights += abs($similarity);
+                        if (isset($userRatings[$otherUserId][$category])) {
+                            $weightedSum += $similarity * ($rating - $userRatings[$otherUserId][$category]);
+                            $sumOfWeights += abs($similarity);
+                        }
                     }
                 }
             }
         }
 
-        // Menghindari pembagian dengan nol
         $sumOfWeights = max($sumOfWeights, 1e-9);
-        
-        // Menghitung prediksi rating dengan bobot terponderasi
-        $prediction = $userRatings[auth()->id()][$category] + ($weightedSum / $sumOfWeights);
+        $userId = auth()->id();
+        $prediction = isset($userRatings[$userId][$category]) ? $userRatings[$userId][$category] + ($weightedSum / $sumOfWeights) : 0;
 
-        return $prediction; // Kembalikan prediksi rating
+        return $prediction;
     }
 }

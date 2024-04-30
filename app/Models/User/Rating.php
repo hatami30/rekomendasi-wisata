@@ -49,7 +49,7 @@ class Rating extends Model
 
         $average = ($numCriteria > 0) ? $totalRating / $numCriteria : 0;
 
-        return round($average, 1);
+        return ($average);
     }
 
     public function setCriteriaRatings($ratings)
