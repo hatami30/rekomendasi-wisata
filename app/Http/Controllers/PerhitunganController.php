@@ -63,7 +63,9 @@ class PerhitunganController extends Controller
 
     public function calculateItemSimilarities($ratings)
     {
-        $userRatings = Rating::groupBy('id_user')->pluck('average', 'id_user');
+        $userRatings = Rating::selectRaw('AVG(average) as average, id_user')
+            ->groupBy('id_user')
+            ->pluck('average', 'id_user');
 
         $similarities = [];
 
@@ -74,7 +76,11 @@ class PerhitunganController extends Controller
                     sort($pair);
                     $pairString = join('_', $pair);
 
-                    if (!isset($similarities[$pairString])) {
+                    $existingSimilarity = Similarity::where('id_wisata1', $pair[0])
+                        ->where('id_wisata2', $pair[1])
+                        ->exists();
+
+                    if (!$existingSimilarity && !isset($similarities[$pairString])) {
                         $similarity = $this->calculateSimilarity($rating1, $rating2, $userRatings);
                         $similarities[$pairString] = $similarity;
                     }
@@ -115,7 +121,11 @@ class PerhitunganController extends Controller
             return 0;
         }
 
-        return $dotProduct / ($magnitude1 * $magnitude2);
+        $similarity = $dotProduct / ($magnitude1 * $magnitude2);
+
+        $normalizedSimilarity = ($similarity + 1) / 2;
+
+        return $normalizedSimilarity;
     }
 
     public function calculateMagnitude($rating)

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Similarity extends Model
 {
     use HasFactory;
+    public $timestamps = false;
 
     protected $fillable = [
         'id_wisata1',
