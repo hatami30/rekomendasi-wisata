@@ -51,18 +51,6 @@ class PerhitunganController extends Controller
         return redirect()->back()->with('success', 'Rating berhasil disimpan.');
     }
 
-    public function calculateAverageRating($ratings)
-    {
-        $totalRating = array_sum(array_column($ratings->toArray(), 'average'));
-        $numRatings = count($ratings);
-
-        if ($numRatings === 0) {
-            return 0;
-        }
-
-        return $totalRating / $numRatings;
-    }
-
     public function calculateAndSaveRecommendations($userId)
     {
         $userRatings = Rating::where('id_user', $userId)->get();
@@ -127,8 +115,8 @@ class PerhitunganController extends Controller
         foreach ($rating1->toArray() as $key => $value) {
             if (is_numeric($value) && is_numeric($rating2->$key)) {
                 $dotProduct += $value * $rating2->$key;
-                $magnitude1 += pow($value, 2);
-                $magnitude2 += pow($rating2->$key, 2);
+                $magnitude1 += $value * $value;
+                $magnitude2 += $rating2->$key * $rating2->$key;
             }
         }
 
@@ -139,7 +127,23 @@ class PerhitunganController extends Controller
             return 0;
         }
 
-        return $dotProduct / ($magnitude1 * $magnitude2);
+        $cosineSimilarity = $dotProduct / ($magnitude1 * $magnitude2);
+
+        return $cosineSimilarity;
+    }
+
+    public function calculateMagnitude($rating)
+    {
+        $magnitude = 0;
+        $criteria = $this->getCriteriaNames();
+
+        foreach ($criteria as $criterion) {
+            if (isset($rating->{$criterion})) {
+                $magnitude += $rating->{$criterion} * $rating->{$criterion};
+            }
+        }
+
+        return sqrt($magnitude);
     }
 
     public function calculatePredictions($userId, $userRatings, $similarities, $ratedWisata)
@@ -158,7 +162,7 @@ class PerhitunganController extends Controller
 
                 foreach ($userRatings as $userRating) {
                     $similarity = $similarities[$userRating->id_wisata . '_' . $wisata->id] ?? 0;
-                    $prediction += $userRating->average * $similarity;
+                    $prediction += $similarity * $userRating->rating;
                     $totalSimilarity += $similarity;
                 }
 

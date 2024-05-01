@@ -42,7 +42,7 @@ class Prediction extends Model
                 $otherUserRatings = $otherUserRating->toArray();
 
                 foreach ($otherUserRatings as $category => $rating) {
-                    if ($category != 'id_user' && $category != 'id_wisata') {
+                    if ($category !== 'id_user' && $category !== 'id_wisata') {
                         if (isset($userRatings[$otherUserId][$category])) {
                             $weightedSum += $similarity * ($rating - $userRatings[$otherUserId][$category]);
                             $sumOfWeights += abs($similarity);

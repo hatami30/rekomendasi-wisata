@@ -47,9 +47,9 @@ class Rating extends Model
             }
         }
 
-        $average = ($numCriteria > 0) ? $totalRating / $numCriteria : 0;
+        $average = ($numCriteria > 0) ? $totalRating / $numCriteria : null;
 
-        return ($average);
+        return $average;
     }
 
     public function setCriteriaRatings($ratings)
@@ -67,6 +67,10 @@ class Rating extends Model
 
     public function getCriteriaNames()
     {
-        return array_diff($this->fillable, ['id_user', 'id_wisata']);
+        return array_diff($this->fillable, [
+            'id_user', 
+            'id_wisata', 
+            'average'
+        ]);
     }
 }

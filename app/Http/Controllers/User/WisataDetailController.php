@@ -6,6 +6,7 @@ use App\Models\User\Rating;
 use App\Models\Admin\Wisata;
 // use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Collection;
 
 class WisataDetailController extends Controller
 {
@@ -24,10 +25,10 @@ class WisataDetailController extends Controller
     /**
      * Calculate the average rating for a given collection of ratings.
      */
-    public function calculateAverageRating($ratings)
+    public function calculateAverageRating(Collection $ratings)
     {
-        $totalRating = array_sum(array_column($ratings->toArray(), 'average'));
-        $numRatings = count($ratings);
+        $totalRating = $ratings->sum('rating');
+        $numRatings = $ratings->count();
 
         if ($numRatings === 0) {
             return 0;
