@@ -76,13 +76,15 @@ class PerhitunganController extends Controller
                     sort($pair);
                     $pairString = join('_', $pair);
 
-                    $existingSimilarity = Similarity::where('id_wisata1', $pair[0])
-                        ->where('id_wisata2', $pair[1])
-                        ->exists();
+                    if ($pair[0] !== $pair[1]) {
+                        $existingSimilarity = Similarity::where('id_wisata1', $pair[0])
+                            ->where('id_wisata2', $pair[1])
+                            ->exists();
 
-                    if (!$existingSimilarity && !isset($similarities[$pairString])) {
-                        $similarity = $this->calculateSimilarity($rating1, $rating2, $userRatings);
-                        $similarities[$pairString] = $similarity;
+                        if (!$existingSimilarity && !isset($similarities[$pairString])) {
+                            $similarity = $this->calculateSimilarity($rating1, $rating2, $userRatings);
+                            $similarities[$pairString] = $similarity;
+                        }
                     }
                 }
             }
