@@ -63,32 +63,20 @@ class PerhitunganController extends Controller
 
     public function calculateItemSimilarities($ratings)
     {
-        $existingSimilarities = Similarity::whereIn('id_wisata1', $ratings->pluck('id_wisata'))
-            ->whereIn('id_wisata2', $ratings->pluck('id_wisata'))
-            ->get();
-
-        $processedPairs = [];
+        $userRatings = Rating::groupBy('id_user')->pluck('average', 'id_user');
 
         $similarities = [];
 
         foreach ($ratings as $rating1) {
             foreach ($ratings as $rating2) {
-                if ($rating1->id != $rating2->id) {
+                if ($rating1->id !== $rating2->id) {
                     $pair = [$rating1->id_wisata, $rating2->id_wisata];
                     sort($pair);
                     $pairString = join('_', $pair);
 
-                    if (!in_array($pairString, $processedPairs)) {
-                        $existing = $existingSimilarities->first(function ($item) use ($pairString) {
-                            return $item->id_wisata1 == $pairString || $item->id_wisata2 == $pairString;
-                        });
-
-                        if (!$existing && !isset($similarities[$pairString])) {
-                            $similarity = $this->calculateSimilarity($rating1, $rating2);
-                            $similarities[$pairString] = $similarity;
-
-                            $processedPairs[] = $pairString;
-                        }
+                    if (!isset($similarities[$pairString])) {
+                        $similarity = $this->calculateSimilarity($rating1, $rating2, $userRatings);
+                        $similarities[$pairString] = $similarity;
                     }
                 }
             }
@@ -102,11 +90,11 @@ class PerhitunganController extends Controller
                 'similarity' => $similarity,
             ]);
         }
-    
+
         return $similarities;
     }
 
-    public function calculateSimilarity($rating1, $rating2)
+    public function calculateSimilarity($rating1, $rating2, $userRatings)
     {
         $dotProduct = 0;
         $magnitude1 = 0;
@@ -114,9 +102,9 @@ class PerhitunganController extends Controller
 
         foreach ($rating1->toArray() as $key => $value) {
             if (is_numeric($value) && is_numeric($rating2->$key)) {
-                $dotProduct += $value * $rating2->$key;
-                $magnitude1 += $value * $value;
-                $magnitude2 += $rating2->$key * $rating2->$key;
+                $dotProduct += ($value - $userRatings[$rating1->id_user]) * ($rating2->$key - $userRatings[$rating2->id_user]);
+                $magnitude1 += pow(($value - $userRatings[$rating1->id_user]), 2);
+                $magnitude2 += pow(($rating2->$key - $userRatings[$rating2->id_user]), 2);
             }
         }
 
@@ -127,9 +115,7 @@ class PerhitunganController extends Controller
             return 0;
         }
 
-        $cosineSimilarity = $dotProduct / ($magnitude1 * $magnitude2);
-
-        return $cosineSimilarity;
+        return $dotProduct / ($magnitude1 * $magnitude2);
     }
 
     public function calculateMagnitude($rating)
@@ -162,7 +148,7 @@ class PerhitunganController extends Controller
 
                 foreach ($userRatings as $userRating) {
                     $similarity = $similarities[$userRating->id_wisata . '_' . $wisata->id] ?? 0;
-                    $prediction += $similarity * $userRating->rating;
+                    $prediction += $userRating->rating * $similarity;
                     $totalSimilarity += $similarity;
                 }
 

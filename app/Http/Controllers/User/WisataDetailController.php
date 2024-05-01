@@ -27,7 +27,7 @@ class WisataDetailController extends Controller
      */
     public function calculateAverageRating(Collection $ratings)
     {
-        $totalRating = $ratings->sum('rating');
+        $totalRating = $ratings->sum('average');
         $numRatings = $ratings->count();
 
         if ($numRatings === 0) {
