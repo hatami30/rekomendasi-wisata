@@ -1,0 +1,560 @@
+/*------------------------------------
+Fonts
+------------------------------------*/
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600;700;900&display=swap");
+
+/*------------------------------------
+Global css for color
+------------------------------------*/
+:root {
+    --white-color: #ffffff;
+    --primary-color: #9eb384;
+    --secondary-color: #445434;
+    --thin-color: #a3b886;
+    --outline-color: #d6d6d6;
+    --black-1-color: #000000;
+    --black-2-color: #323232;
+    --black-3-color: #8e8e8e;
+    --hiro-color: #f9fbfd;
+    --footer-color: #f3f7fb;
+    --background-danger-color: #fff8f8;
+    --background-primary-color: #f9fbfd;
+    --danger-color: #fd5454;
+    --success-color: #00db93;
+    --warning-color: #ffaa00;
+    --warninglight-color: #fff1d6;
+}
+
+/*------------------------------------
+Global css for text homepage
+------------------------------------*/
+:root {
+    --hiro-text: 48px;
+    --hiro-text-sm: 15px;
+    --home-subtitle: 17px;
+    --home-title: 35px;
+    --links-menu: 14px;
+}
+
+/*------------------------------------
+Public setup css
+------------------------------------*/
+
+body {
+    font-family: "Poppins", sans-serif;
+    overflow-x: hidden;
+    line-height: 1.5;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: none !important;
+}
+
+img {
+    max-width: 100%;
+    vertical-align: middle;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+/* button with links setup */
+button.btn.btn-primary,
+a.btn.btn-primary {
+    background-color: var(--primary-color) !important;
+    padding: 0.7rem 2rem;
+    border-radius: 12px;
+    border: 0;
+    position: relative;
+    top: 0;
+    box-shadow: none;
+    cursor: pointer;
+    transition: top ease 0.5s;
+}
+
+button.btn.btn-secondary:hover,
+a.btn.btn-primary:hover {
+    top: -5px;
+    box-shadow: 0px 10px 19px rgba(51, 94, 234, 0.27);
+}
+
+button.btn.btn-secondary,
+a.btn.btn-secondary {
+    background-color: var(--secondary-color) !important;
+    padding: 0.7rem 2rem;
+    border-radius: 12px;
+    border: 0;
+    position: relative;
+    top: 0;
+    color: var(--white-color);
+    cursor: pointer;
+    display: inline-block;
+    transition: top ease 0.5s;
+}
+
+button.btn.btn-primary:focus {
+    box-shadow: none !important;
+}
+
+button.btn.btn-secondary:hover,
+a.btn.btn-secondary:hover {
+    top: -5px;
+    box-shadow: 0px 10px 19px rgba(51, 94, 234, 0.27);
+}
+
+/* Text setup */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-danger {
+    color: var(--danger-color) !important;
+}
+
+.text-success {
+    color: var(--success-color) !important;
+}
+
+.text-warning {
+    color: var(--warning-color) !important;
+}
+
+/* body color */
+body.hiro-color {
+    background-color: var(--hiro-color);
+}
+
+/*------------------------------------
+Navbar 
+------------------------------------*/
+.navbar {
+    background-color: var(--white-color);
+    padding: 20px 0;
+    transition: all 0.5s ease;
+    box-shadow: 0px 4px 28px rgba(0, 0, 0, 0.04);
+}
+
+.navbar > .container {
+    padding: 0 15px;
+}
+
+.navbar .nav-item {
+    margin-left: 45px;
+}
+
+.navbar .nav-item .nav-link {
+    color: var(--black-3-color);
+    font-size: var(--links-menu);
+    line-height: 21px;
+    padding: 10px 0;
+    position: relative;
+}
+
+.navbar .nav-item .nav-link.active {
+    color: var(--primary-color);
+}
+
+.navbar .nav-item .nav-link.active:hover {
+    color: var(--primary-color);
+}
+
+.navbar .nav-item .nav-link::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 4.6em;
+    bottom: 0;
+    right: 0;
+    height: 2.1px;
+    background-color: var(--primary-color);
+    transition: all 0.5s ease;
+    transform: scale(0);
+}
+
+.navbar .nav-item .dropdown-menu {
+    box-shadow: var(--shadow-black-300);
+    border-radius: 10px;
+    border: none;
+    transition: all 0.5s ease;
+}
+
+.navbar .nav-item .nav-link.active::before,
+.navbar .nav-item .nav-link:hover::before {
+    transform: scale(1);
+}
+
+.navbar img.avatar-profile {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+/*------------------------------------
+Hiro Homepage Section 
+------------------------------------*/
+
+section.jumbotron {
+    background-color: var(--hiro-color);
+    height: 100vh;
+}
+
+.home {
+    background-image: url("https://i.ibb.co/gSDP1Cp/noko-selayar.jpg");
+    background-size: cover;
+    background-position-y: center;
+    min-height: 100vh;
+    position: relative;
+    background-repeat: no-repeat;
+}
+
+.home-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 5rem;
+}
+
+.cta-home a {
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 10px 10px 10px;
+}
+
+.cta-home a.btn-primary {
+    padding: 1rem;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 22px;
+}
+
+.cta-home a.btn-secondary {
+    padding: 1rem 2rem;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 22px;
+}
+
+.cta-home a i {
+    margin-right: 10rem !important;
+}
+
+.home-text h1 {
+    font-size: var(--hiro-text);
+    color: var(--white-color);
+    font-weight: 500;
+    text-align: center;
+    line-height: 67px;
+    max-width: 646px;
+}
+
+section.card-count .card {
+    background-color: var(--hiro-color);
+    border: none;
+    z-index: 1;
+    padding: 1rem;
+    box-shadow: 0px 38px 69px rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    margin: 3rem;
+}
+
+section.card-count .card-body h3 {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 31px;
+    color: var(--black-2-color);
+}
+
+section.card-count .card-body p {
+    font-size: 14px;
+    margin-right: 10px;
+    padding-right: 1rem;
+    color: var(--black-3-color);
+    font-weight: 500;
+    line-height: 22px;
+}
+
+section.card-count .card-body i {
+    color: var(--primary-color);
+    font-size: 24px;
+}
+
+.nt5 {
+    margin-top: -8rem;
+}
+
+.nt6 {
+    margin-top: -10rem;
+}
+
+.nt8 {
+    margin-top: -14rem;
+}
+
+.nt8-detail-course {
+    margin-top: -14rem !important;
+}
+
+/*------------------------------------
+Card list
+------------------------------------*/
+
+section.wisata {
+    margin-top: 6rem;
+    margin-bottom: 6rem;
+}
+
+section.wisata h3 {
+    margin-bottom: 2rem;
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+.swiper-pagination-bullet-active {
+    background: var(--primary-color);
+}
+
+/*------------------------------------
+About Section
+------------------------------------*/
+
+section.about {
+    padding: 4rem 0 4rem 0;
+}
+
+section.about .text-about {
+    padding: 6rem 0 0 0;
+    margin-left: 97px;
+}
+
+section.about .text-about h4 {
+    font-size: 36px;
+    font-weight: normal;
+    line-height: 54px;
+    color: var(--black-1-color);
+    padding-bottom: 18px;
+}
+
+section.about .text-about p {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 32px;
+    color: var(--black-3-color);
+}
+
+section.about .text-about span {
+    font-weight: bold;
+}
+
+/*------------------------------------
+Rekomendasi Section
+------------------------------------*/
+
+section.rekomendasi {
+    padding: 2rem 0 0 0;
+}
+
+section.rekomendasi h3 {
+    margin-bottom: 2rem;
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+/*------------------------------------
+Category Section
+------------------------------------*/
+
+.category {
+    padding: 7rem 0 0 0;
+    margin: 0 0 18px 0;
+    text-align: center;
+}
+
+.category .heading {
+    overflow: hidden;
+    padding: 7px 1px;
+}
+
+.category .holder {
+    margin: 0 -7px 0 -4px;
+    padding: 5px 0 0;
+    position: relative;
+}
+
+.category .slider {
+    list-style: none;
+    margin: auto;
+    position: relative;
+    padding: 4px 0 0;
+    overflow-x: scroll;
+    white-space: nowrap;
+    width: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.category .slider::-webkit-scrollbar {
+    display: none;
+}
+
+.category .slider li {
+    display: inline-table;
+    position: relative;
+    text-align: center;
+    width: 90px;
+    margin-right: 10px;
+    padding-top: 10px;
+    /* background-color: var(--primary-color); */
+    border-radius: 32px;
+}
+
+.category .slider a {
+    text-decoration: none;
+    color: #333 !important;
+}
+
+.category .slider figure {
+    width: 100%;
+}
+
+.category .slider .img-holder {
+    margin: 0 0 -12px;
+}
+
+.category .slider img {
+    display: block;
+    margin: 2px auto;
+}
+
+figcaption {
+    display: block;
+}
+
+.category .heading a.more {
+    color: #9b9b9b;
+    float: right;
+    font-size: 15px;
+    letter-spacing: 1px;
+    max-width: 27%;
+    text-decoration: none;
+    margin-top: -20px;
+}
+
+.category .heading p {
+    color: #535147;
+    font-size: 17px;
+    margin: 0;
+    max-width: 73%;
+    text-transform: uppercase;
+}
+
+/*------------------------ 
+Wisata Detail Section
+------------------------*/
+
+section.wisata-detail {
+    padding: 7rem 0 0 0;
+}
+
+.image-container img {
+    max-width: 800px;
+    max-height: 400px;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 40px;
+}
+
+.slider-container {
+    margin-bottom: 20px;
+}
+
+.rating-container {
+    margin-bottom: 20px;
+}
+
+#ratingContainer {
+    display: flex;
+    align-items: center;
+}
+
+#rating {
+    margin-right: 5px;
+}
+
+#ratingText {
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+/*------------------------ 
+Swiper
+------------------------*/
+
+.swiper-pagination {
+    display: none;
+}
+
+/*------------------------ 
+Responsive
+------------------------*/
+
+@media (max-width: 991.98px) {
+    /*------------------------------------
+    About Section
+    ------------------------------------*/
+    section.about {
+        padding: 6rem 0 3rem 0;
+    }
+
+    section.about .text-about {
+        padding: 3rem 0 0 0;
+        margin-left: 0;
+    }
+
+    section.crowdfounding {
+        padding: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    /*------------------------ 
+    Navbar
+    -----------------------*/
+    .navbar {
+        padding: 15px 0;
+    }
+
+    .navbar > .container {
+        padding: 0 15px;
+    }
+
+    .navbar .nav-item {
+        margin-left: 5px;
+    }
+
+    .navbar .nav-item .nav-link::before {
+        height: 0;
+    }
+
+    .navbar a.btn.btn-primary {
+        display: block;
+    }
+}
+
+@media (max-width: 576px) {
+    .embed-responsive-16by9 iframe {
+        height: 200px;
+        width: 90%;
+    }
+}
