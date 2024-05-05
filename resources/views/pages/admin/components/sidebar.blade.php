@@ -65,10 +65,17 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item {{ request()->segment('2') == 'peringkat' ? 'active' : '' }}">
-                    <a href="{{ route('admin.peringkat.index') }}" class='sidebar-link'>
+                <li class="sidebar-item {{ request()->segment('2') == 'perizinan' ? 'active' : '' }}">
+                    <a href="{{ route('admin.perizinan.index') }}" class='sidebar-link'>
+                        <i class="bi bi-lock"></i>
+                        <span>Perizinan</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item {{ request()->segment('2') == 'perhitungan' ? 'active' : '' }}">
+                    <a href="{{ route('admin.perhitungan.index') }}" class='sidebar-link'>
                         <i class="bi bi-star"></i>
-                        <span>Peringkat</span>
+                        <span>Perhitungan</span>
                     </a>
                 </li>
 

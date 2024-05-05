@@ -60,13 +60,13 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // peringkat
-        Route::prefix('peringkat')->name('peringkat.')->group(function () {
+        Route::prefix('perhitungan')->name('perhitungan.')->group(function () {
             Route::get('/', [Controllers\Admin\PeringkatController::class, 'index'])->name('index');
         });
 
         // perizinan
         Route::prefix('perizinan')->name('perizinan.')->group(function () {
-            // Route::get('/', [Controllers\Admin\PerizinanController::class, 'index'])->name('index');
+            Route::get('/', [Controllers\Admin\PerizinanController::class, 'index'])->name('index');
             // Route::get('/create', [Controllers\Admin\PerizinanController::class, 'create'])->name('create');
             // Route::post('/store', [Controllers\Admin\PerizinanController::class, 'store'])->name('store');
             // Route::get('/edit/{id}', [Controllers\Admin\PerizinanController::class, 'edit'])->name('edit');

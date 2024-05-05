@@ -12,7 +12,7 @@ class PerizinanController extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.admin.perizinan.index');
     }
 
     /**
