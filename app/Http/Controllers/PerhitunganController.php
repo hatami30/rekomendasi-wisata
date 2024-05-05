@@ -99,6 +99,8 @@ class PerhitunganController extends Controller
             ]);
         }
 
+        // arsort($similarities);
+
         return $similarities;
     }
 
@@ -175,6 +177,10 @@ class PerhitunganController extends Controller
                 ];
             }
         }
+
+        // usort($predictions, function($a, $b) {
+        //     return $b['predicted'] <=> $a['predicted'];
+        // });
 
         if (!empty($predictions)) {
             Prediction::insert($predictions);

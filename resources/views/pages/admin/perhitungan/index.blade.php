@@ -3,7 +3,7 @@
 @section('title', 'Kategori')
 
 @section('heading')
-    <h3>Data Peringkat</h3>
+    <h3>Data Perhitungan</h3>
 @endsection
 
 @section('content')

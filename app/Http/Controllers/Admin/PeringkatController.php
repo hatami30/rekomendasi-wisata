@@ -17,7 +17,7 @@ class PeringkatController extends Controller
         $similarities = Similarity::all();
         $predictions = Prediction::all();
 
-        return view('pages.admin.peringkat.index', compact('similarities', 'predictions'));
+        return view('pages.admin.perhitungan.index', compact('similarities', 'predictions'));
     }
 
     /**
