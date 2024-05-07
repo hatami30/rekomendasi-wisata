@@ -20,6 +20,7 @@ Route::get('/about', [Controllers\User\AboutController::class, 'index'])->name('
 Route::get('/wisata', [Controllers\User\UserWisataController::class, 'index'])->name('wisata');
 Route::get('/wisata/{slug}', [Controllers\User\UserWisataController::class, 'filterByCategory'])->name('wisata.filter');
 Route::get('/wisata-bawean/{id}', [Controllers\User\WisataDetailController::class, 'show'])->name('wisata.detail'); 
+// Route::get('/perhitungan', [Controllers\PerhitunganController::class, 'calculateAndSaveRecommendations'])->name('perhitungan.calculate');
 
 // auth
 Route::get('/register', [Controllers\AuthController::class, 'showRegistrationForm'])->name('register.form');
@@ -78,7 +79,7 @@ Route::middleware(['auth'])->group(function () {
     // user
     Route::middleware(['auth.user'])->group(function () {
         // Route::post('/wisata/rating', [Controllers\User\WisataDetailController::class, 'store'])->name('wisata.rating');
-        Route::post('/perhitungan', [Controllers\PerhitunganController::class, 'store'])->name('perhitungan.store');
+        Route::post('/perhitungan', [Controllers\User\WisataDetailController::class, 'store'])->name('perhitungan.store');
         // Route::post('/similarities/save', [Controllers\User\WisataDetailController::class, 'saveSimilarities'])->name('similarities.save');
         // Route::post('/predictions/save', [Controllers\User\WisataDetailController::class, 'savePredictions'])->name('predictions.save');
     });

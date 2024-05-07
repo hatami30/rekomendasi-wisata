@@ -7,9 +7,21 @@ use App\Models\Admin\Wisata;
 use Illuminate\Http\Request;
 use App\Models\User\Prediction;
 use App\Models\User\Similarity;
+// use Illuminate\Support\Facades\Log;
+// use InvalidArgumentException;
 
 class PerhitunganController extends Controller
 {
+    // public function index()
+    // {
+    //     $userId = auth()->id();
+    //     $predictedWisataIds = Prediction::where('id_user', $userId)->pluck('id_wisata')->toArray();
+    //     $recommendations = Wisata::whereIn('id', $predictedWisataIds)->get();
+
+    //     // dd($recommendations);
+
+    //     return view('pages.user.wisata-detail', compact('recommendations'));
+    // }
     public function store(Request $request)
     {
         $userId = auth()->id();
@@ -59,6 +71,8 @@ class PerhitunganController extends Controller
         $ratedWisataIds = $userRatings->pluck('id_wisata')->toArray();
         $ratedWisata = Wisata::whereIn('id', $ratedWisataIds)->get();
         $this->calculatePredictions($userId, $userRatings, $similarities, $ratedWisata);
+
+        return redirect()->back()->with('success', 'Rekomendasi wisata berhasil diperbarui.');
     }
 
     public function calculateItemSimilarities($ratings)
@@ -112,9 +126,9 @@ class PerhitunganController extends Controller
 
         foreach ($rating1->toArray() as $key => $value) {
             if (is_numeric($value) && is_numeric($rating2->$key)) {
-                $dotProduct += ($value - $userRatings[$rating1->id_user]) * ($rating2->$key - $userRatings[$rating2->id_user]);
-                $magnitude1 += pow(($value - $userRatings[$rating1->id_user]), 2);
-                $magnitude2 += pow(($rating2->$key - $userRatings[$rating2->id_user]), 2);
+                $dotProduct += $value * $rating2->$key;
+                $magnitude1 += pow($value, 2);
+                $magnitude2 += pow($rating2->$key, 2);
             }
         }
 
@@ -127,9 +141,7 @@ class PerhitunganController extends Controller
 
         $similarity = $dotProduct / ($magnitude1 * $magnitude2);
 
-        $normalizedSimilarity = ($similarity + 1) / 2;
-
-        return $normalizedSimilarity;
+        return $similarity;
     }
 
     public function calculateMagnitude($rating)
@@ -157,19 +169,8 @@ class PerhitunganController extends Controller
 
         foreach ($ratedWisata as $wisata) {
             if (!in_array($wisata->id, $existingPredictions, true)) {
-                $prediction = 0;
-                $totalSimilarity = 0;
-
-                foreach ($userRatings as $userRating) {
-                    $similarity = $similarities[$userRating->id_wisata . '_' . $wisata->id] ?? 0;
-                    $prediction += $userRating->rating * $similarity;
-                    $totalSimilarity += $similarity;
-                }
-
-                if ($totalSimilarity != 0) {
-                    $prediction /= $totalSimilarity;
-                }
-
+                $prediction = $this->predictRating($userRatings, $similarities, $userId, $wisata->id);
+                
                 $predictions[] = [
                     'id_user' => $userId,
                     'id_wisata' => $wisata->id,
@@ -178,12 +179,33 @@ class PerhitunganController extends Controller
             }
         }
 
-        // usort($predictions, function($a, $b) {
-        //     return $b['predicted'] <=> $a['predicted'];
-        // });
-
         if (!empty($predictions)) {
             Prediction::insert($predictions);
+        }
+    }
+
+    public function predictRating($userRatings, $similarities, $userId, $wisataId)
+    {
+        $weightedSum = 0;
+        $sumOfWeights = 0;
+
+        foreach ($similarities as $otherWisataId => $similarity) {
+            if (!isset($userRatings[$otherWisataId])) {
+                continue;
+            }
+
+            $rating = $userRatings[$otherWisataId];
+
+            if (isset($rating[$userId])) {
+                $weightedSum += $similarity * $rating[$userId];
+                $sumOfWeights += $similarity;
+            }
+        }
+
+        if ($sumOfWeights != 0) {
+            return $weightedSum / $sumOfWeights;
+        } else {
+            return 0;
         }
     }
 }

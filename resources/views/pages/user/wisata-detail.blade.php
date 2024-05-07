@@ -120,35 +120,39 @@
                     {{ session('error') }}
                 </div>
             @endif
-            {{-- <div class="container mt-5">
+            <div class="container mt-5">
                 <h3 class="text-center mb-4" style="color: #445434; font-weight: 600">Rekomendasi Lainnya</h3>
                 <div class="swiper mySwiper">
                     <div class="swiper-wrapper">
-                        @foreach ($recommendations as $recommendation)
+                        @forelse ($predictions as $recommendation)
                             <div class="swiper-slide">
                                 <div class="card">
-                                    @if (!empty($recommendation['wisata']) && is_object($recommendation['wisata']))
-                                        <img src="{{ asset('storage/' . $recommendation['wisata']->gambar_wisata) }}"
+                                    @if (!empty($recommendation) && is_object($recommendation) && !empty($recommendation->kategori))
+                                        <img src="{{ asset('storage/' . $recommendation->gambar) }}"
                                             class="card-img-top img-fluid"
                                             style="object-fit: cover; width: 100%; height: 200px;"
-                                            alt="{{ $recommendation['wisata']->nama_wisata }}">
+                                            alt="{{ $recommendation->nama }}">
                                         <div class="card-body">
-                                            <h5 class="card-title">{{ $recommendation['wisata']->nama_wisata }}</h5>
-                                            @php
-                                                $averageRating = $recommendation['wisata']->rating()->avg('average');
-                                            @endphp
+                                            <h5 class="card-title">{{ $recommendation->nama }}</h5>
                                             <div class="d-flex flex-column mb-5">
+                                                @php
+                                                    $averageRating = $recommendation->rating
+                                                        ? ($recommendation->rating->isNotEmpty()
+                                                            ? $recommendation->rating->avg('average')
+                                                            : 0)
+                                                        : 0;
+                                                @endphp
                                                 <div class="d-flex align-items-center">
-                                                    <i class="bi bi-star-fill text-warning me-1 mt-3"
+                                                    <i class="bi bi-star-fill text-warning me-1 mt-1"
                                                         style="font-size: 1rem;"></i>
                                                     <div class="me-1 mt-3">{{ number_format($averageRating, 1) }}</div>
                                                 </div>
                                                 <div class="card-text d-inline-block py-2 px-4 rounded-pill mt-4"
                                                     style="background-color: #e6e6e6; width: fit-content;">
-                                                    {{ $recommendation['wisata']->kategori->nama_kategori }}
+                                                    {{ $recommendation->kategori->nama_kategori }}
                                                 </div>
                                             </div>
-                                            <a href="{{ route('wisata.detail', ['id' => $recommendation['wisata']->id]) }}"
+                                            <a href="{{ route('wisata.detail', ['id' => $recommendation->id]) }}"
                                                 class="btn btn-primary">Detail <i data-feather="arrow-right"></i></a>
                                         </div>
                                     @else
@@ -156,11 +160,13 @@
                                     @endif
                                 </div>
                             </div>
-                        @endforeach
+                        @empty
+                            <p>No recommendations available</p>
+                        @endforelse
                     </div>
                     <div class="swiper-pagination"></div>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </section>
 @endsection
