@@ -28,34 +28,38 @@ class Prediction extends Model
         return $this->belongsTo(Wisata::class, 'id_wisata');
     }
     
-    public function predictRating($userRatings, $similarities, $wisataId)
+    public function predictRating($userRatings, $similarities, $userId, $wisataId)
     {
         $weightedSum = 0;
         $sumOfWeights = 0;
 
-        foreach ($similarities as $otherUserId => $similarity) {
-            $otherUserRating = Rating::where('id_user', $otherUserId)
-                ->where('id_wisata', $wisataId)
-                ->first();
-
-            if ($otherUserRating) {
-                $otherUserRatings = $otherUserRating->toArray();
-
-                foreach ($otherUserRatings as $category => $rating) {
-                    if ($category !== 'id_user' && $category !== 'id_wisata') {
-                        if (isset($userRatings[$otherUserId][$category])) {
-                            $weightedSum += $similarity * ($rating - $userRatings[$otherUserId][$category]);
-                            $sumOfWeights += abs($similarity);
-                        }
-                    }
-                }
+        foreach ($userRatings as $otherWisataId => $rating) {
+            if ($otherWisataId != $wisataId && isset($similarities[$otherWisataId][$wisataId])) {
+                $weightedSum += $rating * $similarities[$otherWisataId][$wisataId];
+                $sumOfWeights += $similarities[$otherWisataId][$wisataId];
             }
         }
 
-        $sumOfWeights = max($sumOfWeights, 1e-9);
-        $userId = auth()->id();
-        $prediction = isset($userRatings[$userId][$category]) ? $userRatings[$userId][$category] + ($weightedSum / $sumOfWeights) : 0;
-
-        return $prediction;
+        if ($sumOfWeights != 0) {
+            return $weightedSum / $sumOfWeights;
+        } else {
+            return 0;
+        }
     }
+
+    // private function calculateAverageUserRating($userId)
+    // {
+    //     $userRatings = Rating::where('id_user', $userId)->get();
+
+    //     $totalRating = 0;
+    //     foreach ($userRatings as $rating) {
+    //         $totalRating += $rating->average; 
+    //     }
+
+    //     $numRatings = count($userRatings);
+
+    //     $averageRating = $numRatings > 0 ? $totalRating / $numRatings : 0;
+
+    //     return $averageRating;
+    // }
 }
