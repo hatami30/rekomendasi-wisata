@@ -1,53 +1,52 @@
 @extends('pages.admin.components.main')
 
-@section('title', 'Kategori')
+@section('title', 'Perizinan Komentar')
 
 @section('heading')
-    <h3>Data Perizinan</h3>
+    <h3>Perizinan Komentar</h3>
 @endsection
 
 @section('content')
     <section class="section">
         <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0">
-                    Data Perizinan
-                </h5>
-                <a href="{{ route('admin.kategori.create') }}" class="btn btn-primary btn-sm">Tambah Kategori</a>
+            <div class="card-header">
+                <h5 class="card-title">Daftar Komentar yang Perlu Disetujui</h5>
             </div>
-
             <div class="card-body table-responsive">
                 @if (session('success'))
                     <div class="alert alert-success mt-2">
                         {{ session('success') }}
                     </div>
                 @endif
-                <table id="kategoriTable" class="table table-striped" style="width:100%">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Kategori</th>
-                            <th>Slug</th>
-                            <th>Aksi</th>
+                            <th>Nama Pengguna</th>
+                            <th>Wisata</th>
+                            <th>Komentar</th>
+                            <th>Status</th>
+                            <th>Tindakan</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($kategoris as $index => $kategori)
+                        @foreach ($komentars as $index => $komentar)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $kategori->nama_kategori }}</td>
-                                <td>{{ $kategori->slug }}</td>
-                                <td class="text-nowrap">
-                                    <a href="{{ route('admin.kategori.edit', $kategori->id) }}"
-                                        class="btn icon btn-primary btn-sm"><i class="bi bi-pencil"></i></a>
-                                    <form action="{{ route('admin.kategori.delete', $kategori->id) }}" method="POST"
-                                        style="display: inline;">
+                                <td>{{ $komentar->user->name }}</td>
+                                <td>{{ $komentar->wisata->nama_wisata }}</td>
+                                <td>{{ $komentar->comment }}</td>
+                                <td>{{ ucfirst($komentar->status) }}</td>
+                                <td>
+                                    <form action="{{ route('admin.perizinan.update', $komentar->id) }}" method="post">
                                         @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn icon btn-secondary btn-sm"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
+                                        @method('PUT')
+                                        <div class="btn-group">
+                                            <button type="submit" class="btn btn-success" name="status"
+                                                value="approved">Setujui</button>
+                                            <button type="submit" class="btn btn-danger" name="status"
+                                                value="rejected">Tolak</button>
+                                        </div>
                                     </form>
                                 </td>
                             </tr>
@@ -57,12 +56,4 @@
             </div>
         </div>
     </section>
-@endsection
-
-@section('script')
-    <script>
-        $(document).ready(function() {
-            new DataTable('#kategoriTable');
-        });
-    </script>
 @endsection

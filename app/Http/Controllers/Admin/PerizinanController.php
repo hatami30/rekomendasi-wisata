@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User\Komentar;
+use App\Http\Controllers\Controller;
 
 class PerizinanController extends Controller
 {
@@ -12,13 +13,14 @@ class PerizinanController extends Controller
      */
     public function index()
     {
-        return view('pages.admin.perizinan.index');
+        $komentars = Komentar::where('status', 'pending')->get();
+        return view('pages.admin.perizinan.index', compact('komentars'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(string $id)
     {
         //
     }
@@ -36,7 +38,8 @@ class PerizinanController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $komentar = Komentar::findOrFail($id);
+        return view('pages.admin.perizinan.show', compact('komentar'));
     }
 
     /**
@@ -52,7 +55,16 @@ class PerizinanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $komentar = Komentar::findOrFail($id);
+        
+        $request->validate([
+            'status' => 'required|in:approved,rejected',
+        ]);
+
+        $komentar->status = $request->status;
+        $komentar->save();
+
+        return redirect()->route('admin.perizinan.index')->with('success', 'Status komentar berhasil diperbarui.');
     }
 
     /**
@@ -61,5 +73,25 @@ class PerizinanController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function approve(Request $request, $id)
+    {
+        // $komentar = Komentar::findOrFail($id);
+        // $komentar->status = 'approved';
+        // $komentar->save();
+
+        // return redirect()->route('admin.perizinan.index')
+        //     ->with('success', 'Komentar berhasil disetujui.');
+    }
+
+    public function reject(Request $request, $id)
+    {
+        // $komentar = Komentar::findOrFail($id);
+        // $komentar->status = 'rejected';
+        // $komentar->save();
+
+        // return redirect()->route('admin.perizinan.index')
+        //     ->with('success', 'Komentar berhasil ditolak.');
     }
 }
