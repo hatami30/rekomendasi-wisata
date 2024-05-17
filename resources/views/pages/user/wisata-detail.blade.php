@@ -15,8 +15,8 @@
                         @foreach ($images as $image)
                             <div class="swiper-slide">
                                 <div class="card">
-                                    <img src="{{ asset('storage/' . $image->image_path) }}" class="card-img-top"
-                                        alt="Image">
+                                    <img src="{{ asset('storage/user/wisata_photos/' . $image->image_path) }}"
+                                        class="card-img-top" alt="Image">
                                 </div>
                             </div>
                         @endforeach
@@ -117,22 +117,11 @@
                 <div class="col-lg-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Lokasi</h5>
-                            <p class="card-text">{{ $wisata->lokasi_wisata }}</p>
-                            <a href="https://www.google.com/maps/search/?api=1&query={{ $wisata->latitude }},{{ $wisata->longitude }}"
-                                target="_blank" class="btn btn-primary">Lihat Lokasi
-                                <i class="bi bi-geo-fill"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
                             <h5 class="card-title">Unggah Gambar</h5>
                             <p class="card-text">Unggah gambar untuk menambahkan foto-foto wisata.</p>
-                            <form action="{{ route('gambar.store') }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('image.store') }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="text-center mt-3">
-                                    <label for="images" class="form-label">Pilih Gambar (Maksimal 5 gambar)</label>
                                     <input type="hidden" name="id_user" value="{{ auth()->id() }}">
                                     <input type="hidden" name="id_wisata" value="{{ $wisata->id }}">
                                     <input type="file" name="images[]" id="images" multiple accept="image/*">
@@ -143,6 +132,16 @@
                                 </div>
                                 <button type="submit" class="btn btn-primary mt-3">Kirim</button>
                             </form>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Lokasi</h5>
+                            <p class="card-text">{{ $wisata->lokasi_wisata }}</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query={{ $wisata->latitude }},{{ $wisata->longitude }}"
+                                target="_blank" class="btn btn-primary">Lihat Lokasi
+                                <i class="bi bi-geo-fill"></i>
+                            </a>
                         </div>
                     </div>
                 </div>

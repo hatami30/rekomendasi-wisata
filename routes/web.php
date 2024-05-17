@@ -66,9 +66,11 @@ Route::middleware(['auth'])->group(function () {
 
         // perizinan
         Route::prefix('perizinan')->name('perizinan.')->group(function () {
-            Route::get('/', [Controllers\Admin\PerizinanController::class, 'index'])->name('index');
+            Route::get('/image', [Controllers\Admin\PerizinanController::class, 'indexImage'])->name('image.index');
+            Route::get('/komentar', [Controllers\Admin\PerizinanController::class, 'indexKomentar'])->name('komentar.index');
             Route::get('/{id}', [Controllers\Admin\PerizinanController::class, 'show'])->name('show');
-            Route::put('/{id}', [Controllers\Admin\PerizinanController::class, 'update'])->name('update');
+            Route::put('persetujuan-komentar/{id}', [Controllers\Admin\PerizinanController::class, 'updateKomentar'])->name('update.komentar');
+            Route::put('persetujuan-image/{id}', [Controllers\Admin\PerizinanController::class, 'updateImage'])->name('update.image');
         });
     });
 
@@ -77,7 +79,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/perhitungan', [Controllers\User\WisataDetailController::class, 'storeRating'])->name('perhitungan.store');
         Route::get('/komentar/{id}', [Controllers\User\WisataDetailController::class, 'show'])->name('komentar.show');
         Route::post('/komentar', [Controllers\User\WisataDetailController::class, 'storeComment'])->name('komentar.store');
-        Route::get('/gambar/{id}', [Controllers\User\WisataDetailController::class, 'show'])->name('gambar.show');
-        Route::post('/gambar', [Controllers\User\WisataDetailController::class, 'storeImage'])->name('gambar.store');
+        Route::get('/image/{id}', [Controllers\User\WisataDetailController::class, 'show'])->name('image.show');
+        Route::post('/image', [Controllers\User\WisataDetailController::class, 'storeImage'])->name('image.store');
     });
 });

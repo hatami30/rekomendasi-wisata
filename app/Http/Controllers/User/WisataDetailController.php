@@ -84,7 +84,7 @@ class WisataDetailController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $imageName = time() . '_' . $image->getClientOriginalName();
-                $image->storeAs('public/wisata_photos', $imageName);
+                $image->storeAs('user/wisata_photos', $imageName);
 
                 $imageModel = new Image();
                 $imageModel->id_user = $userId;
@@ -195,6 +195,10 @@ class WisataDetailController extends Controller
         foreach ($ratings as $rating) {
             $sum += $rating->average;
             $count++;
+        }
+
+        if ($count == 0) {
+            return 0;
         }
 
         return $sum / $count;
