@@ -2,23 +2,32 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User\Komentar;
+use App\Models\User\Image;
+use App\Http\Controllers\Controller;
 
 class PerizinanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function indexImage()
     {
-        return view('pages.admin.perizinan.index');
+        $fotoPending = Image::where('status', 'pending')->get();
+        return view('pages.admin.perizinan.image.index', compact('fotoPending'));
+    }
+
+    public function indexKomentar()
+    {
+        $komentars = Komentar::where('status', 'pending')->get();
+        return view('pages.admin.perizinan.komentar.index', compact('komentars'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(string $id)
     {
         //
     }
@@ -36,7 +45,8 @@ class PerizinanController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $komentar = Komentar::findOrFail($id);
+        return view('pages.admin.perizinan.show', compact('komentar'));
     }
 
     /**
@@ -50,9 +60,32 @@ class PerizinanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function updateKomentar(Request $request, string $id)
     {
-        //
+        $komentar = Komentar::findOrFail($id);
+        
+        $request->validate([
+            'status' => 'required|in:approved,rejected',
+        ]);
+
+        $komentar->status = $request->status;
+        $komentar->save();
+
+        return redirect()->route('admin.perizinan.komentar.index')->with('success_komentar', 'Status komentar berhasil diperbarui.');
+    }
+
+    public function updateImage(Request $request, string $id)
+    {
+        $image = Image::findOrFail($id);
+        
+        $request->validate([
+            'status' => 'required|in:approved,rejected',
+        ]);
+
+        $image->status = $request->status;
+        $image->save();
+
+        return redirect()->route('admin.perizinan.image.index')->with('success_image', 'Status image berhasil diperbarui.');
     }
 
     /**
@@ -61,5 +94,25 @@ class PerizinanController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function approve(Request $request, $id)
+    {
+        // $komentar = Komentar::findOrFail($id);
+        // $komentar->status = 'approved';
+        // $komentar->save();
+
+        // return redirect()->route('admin.perizinan.index')
+        //     ->with('success', 'Komentar berhasil disetujui.');
+    }
+
+    public function reject(Request $request, $id)
+    {
+        // $komentar = Komentar::findOrFail($id);
+        // $komentar->status = 'rejected';
+        // $komentar->save();
+
+        // return redirect()->route('admin.perizinan.index')
+        //     ->with('success', 'Komentar berhasil ditolak.');
     }
 }

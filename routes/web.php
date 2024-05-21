@@ -20,7 +20,6 @@ Route::get('/about', [Controllers\User\AboutController::class, 'index'])->name('
 Route::get('/wisata', [Controllers\User\UserWisataController::class, 'index'])->name('wisata');
 Route::get('/wisata/{slug}', [Controllers\User\UserWisataController::class, 'filterByCategory'])->name('wisata.filter');
 Route::get('/wisata-bawean/{id}', [Controllers\User\WisataDetailController::class, 'show'])->name('wisata.detail'); 
-// Route::get('/perhitungan', [Controllers\PerhitunganController::class, 'calculateAndSaveRecommendations'])->name('perhitungan.calculate');
 
 // auth
 Route::get('/register', [Controllers\AuthController::class, 'showRegistrationForm'])->name('register.form');
@@ -67,20 +66,20 @@ Route::middleware(['auth'])->group(function () {
 
         // perizinan
         Route::prefix('perizinan')->name('perizinan.')->group(function () {
-            Route::get('/', [Controllers\Admin\PerizinanController::class, 'index'])->name('index');
-            // Route::get('/create', [Controllers\Admin\PerizinanController::class, 'create'])->name('create');
-            // Route::post('/store', [Controllers\Admin\PerizinanController::class, 'store'])->name('store');
-            // Route::get('/edit/{id}', [Controllers\Admin\PerizinanController::class, 'edit'])->name('edit');
-            // Route::put('/update/{id}', [Controllers\Admin\PerizinanController::class, 'update'])->name('update');
-            // Route::delete('/delete/{id}', [Controllers\Admin\PerizinanController::class, 'destroy'])->name('delete');
+            Route::get('/image', [Controllers\Admin\PerizinanController::class, 'indexImage'])->name('image.index');
+            Route::get('/komentar', [Controllers\Admin\PerizinanController::class, 'indexKomentar'])->name('komentar.index');
+            Route::get('/{id}', [Controllers\Admin\PerizinanController::class, 'show'])->name('show');
+            Route::put('persetujuan-komentar/{id}', [Controllers\Admin\PerizinanController::class, 'updateKomentar'])->name('update.komentar');
+            Route::put('persetujuan-image/{id}', [Controllers\Admin\PerizinanController::class, 'updateImage'])->name('update.image');
         });
     });
 
     // user
     Route::middleware(['auth.user'])->group(function () {
-        // Route::post('/wisata/rating', [Controllers\User\WisataDetailController::class, 'store'])->name('wisata.rating');
-        Route::post('/perhitungan', [Controllers\User\WisataDetailController::class, 'store'])->name('perhitungan.store');
-        // Route::post('/similarities/save', [Controllers\User\WisataDetailController::class, 'saveSimilarities'])->name('similarities.save');
-        // Route::post('/predictions/save', [Controllers\User\WisataDetailController::class, 'savePredictions'])->name('predictions.save');
+        Route::post('/perhitungan', [Controllers\User\WisataDetailController::class, 'storeRating'])->name('perhitungan.store');
+        Route::get('/komentar/{id}', [Controllers\User\WisataDetailController::class, 'show'])->name('komentar.show');
+        Route::post('/komentar', [Controllers\User\WisataDetailController::class, 'storeComment'])->name('komentar.store');
+        Route::get('/image/{id}', [Controllers\User\WisataDetailController::class, 'show'])->name('image.show');
+        Route::post('/image', [Controllers\User\WisataDetailController::class, 'storeImage'])->name('image.store');
     });
 });

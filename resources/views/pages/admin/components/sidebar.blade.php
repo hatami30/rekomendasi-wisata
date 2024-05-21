@@ -65,11 +65,21 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item {{ request()->segment('2') == 'perizinan' ? 'active' : '' }}">
-                    <a href="{{ route('admin.perizinan.index') }}" class='sidebar-link'>
+                <li class="sidebar-item has-sub {{ request()->segment(2) == 'perizinan' ? 'active' : '' }}">
+                    <a href="#" class="sidebar-link">
                         <i class="bi bi-lock"></i>
                         <span>Perizinan</span>
                     </a>
+
+                    <ul class="submenu {{ request()->segment(2) == 'perizinan' ? 'submenu-open' : '' }}"
+                        style="--submenu-height: auto;">
+                        <li class="submenu-item {{ request()->segment(3) == 'image' ? 'active' : '' }}">
+                            <a href="{{ route('admin.perizinan.image.index') }}" class="submenu-link">Image</a>
+                        </li>
+                        <li class="submenu-item {{ request()->segment(3) == 'komentar' ? 'active' : '' }}">
+                            <a href="{{ route('admin.perizinan.komentar.index') }}" class="submenu-link">Komentar</a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="sidebar-item {{ request()->segment('2') == 'perhitungan' ? 'active' : '' }}">

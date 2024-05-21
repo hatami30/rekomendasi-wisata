@@ -12,31 +12,14 @@
             <div class="row-container mt-4">
                 <div class="swiper mySwiper">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="card">
-                                <img src="https://i.ibb.co/gSDP1Cp/noko-selayar.jpg" class="card-img-top" alt="Image 1">
+                        @foreach ($images as $image)
+                            <div class="swiper-slide">
+                                <div class="card">
+                                    <img src="{{ asset('storage/user/wisata_photos/' . $image->image_path) }}"
+                                        class="card-img-top" alt="Image">
+                                </div>
                             </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="card">
-                                <img src="https://i.ibb.co/gSDP1Cp/noko-selayar.jpg" class="card-img-top" alt="Image 1">
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="card">
-                                <img src="https://i.ibb.co/gSDP1Cp/noko-selayar.jpg" class="card-img-top" alt="Image 1">
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="card">
-                                <img src="https://i.ibb.co/gSDP1Cp/noko-selayar.jpg" class="card-img-top" alt="Image 1">
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="card">
-                                <img src="https://i.ibb.co/gSDP1Cp/noko-selayar.jpg" class="card-img-top" alt="Image 1">
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     <div class="swiper-pagination"></div>
                 </div>
@@ -101,8 +84,56 @@
                             </form>
                         </div>
                     </div>
+                    <div class="mt-4">
+                        <h4 class="mb-3">Komentar</h4>
+                        <form action="{{ route('komentar.store') }}" method="post">
+                            @csrf
+                            <input type="hidden" name="id_user" value="{{ auth()->id() }}">
+                            <input type="hidden" name="id_wisata" value="{{ $wisata->id }}">
+                            <div class="form-group">
+                                <textarea class="form-control" name="comment" rows="3" placeholder="Tulis komentar Anda di sini" required></textarea>
+                            </div>
+                            <input type="hidden" name="status" value="pending">
+                            <button type="submit" class="btn btn-primary">Kirim Komentar</button>
+                        </form>
+                    </div>
+                    @if ($komentars->isNotEmpty())
+                        <div class="mt-4">
+                            <h5>Komentar Pengguna</h5>
+                            <ul class="list-group">
+                                @foreach ($komentars as $komentar)
+                                    <li class="list-group-item">
+                                        <div class="mb-2">
+                                            <strong>{{ $komentar->user->name }}</strong> -
+                                            {{ $komentar->created_at->diffForHumans() }}
+                                        </div>
+                                        <p>{{ $komentar->comment }}</p>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                 </div>
                 <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Unggah Gambar</h5>
+                            <p class="card-text">Unggah gambar untuk menambahkan foto-foto wisata.</p>
+                            <form action="{{ route('image.store') }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                <div class="text-center mt-3">
+                                    <input type="hidden" name="id_user" value="{{ auth()->id() }}">
+                                    <input type="hidden" name="id_wisata" value="{{ $wisata->id }}">
+                                    <input type="file" name="images[]" id="images" multiple accept="image/*">
+                                    <input type="hidden" name="status" value="pending">
+                                    @error('images')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3">Kirim</button>
+                            </form>
+                        </div>
+                    </div>
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Lokasi</h5>
@@ -120,53 +151,56 @@
                     {{ session('error') }}
                 </div>
             @endif
-            <div class="container mt-5">
+            {{-- <div class="container mt-5">
                 <h3 class="text-center mb-4" style="color: #445434; font-weight: 600">Rekomendasi Lainnya</h3>
                 <div class="swiper mySwiper">
                     <div class="swiper-wrapper">
-                        @forelse ($predictions as $recommendation)
-                            <div class="swiper-slide">
-                                <div class="card">
-                                    @if (!empty($recommendation) && is_object($recommendation) && !empty($recommendation->kategori))
-                                        <img src="{{ asset('storage/' . $recommendation->gambar) }}"
-                                            class="card-img-top img-fluid"
-                                            style="object-fit: cover; width: 100%; height: 200px;"
-                                            alt="{{ $recommendation->nama }}">
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ $recommendation->nama }}</h5>
-                                            <div class="d-flex flex-column mb-5">
-                                                @php
-                                                    $averageRating = $recommendation->rating
-                                                        ? ($recommendation->rating->isNotEmpty()
-                                                            ? $recommendation->rating->avg('average')
-                                                            : 0)
-                                                        : 0;
-                                                @endphp
-                                                <div class="d-flex align-items-center">
-                                                    <i class="bi bi-star-fill text-warning me-1 mt-1"
-                                                        style="font-size: 1rem;"></i>
-                                                    <div class="me-1 mt-3">{{ number_format($averageRating, 1) }}</div>
+                        @if ($predictions)
+                            @forelse ($predictions as $recommendation)
+                                @if (!empty($recommendation) && is_object($recommendation) && $recommendation->kategori)
+                                    <div class="swiper-slide">
+                                        <div class="card">
+                                            <img src="{{ asset('storage/' . $recommendation->gambar) }}"
+                                                class="card-img-top img-fluid"
+                                                style="object-fit: cover; width: 100%; height: 200px;"
+                                                alt="{{ $recommendation->nama }}">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ $recommendation->nama }}</h5>
+                                                <div class="d-flex flex-column mb-5">
+                                                    @php
+                                                        $averageRating = $recommendation->rating
+                                                            ? ($recommendation->rating->isNotEmpty()
+                                                                ? $recommendation->rating->avg('average')
+                                                                : 0)
+                                                            : 0;
+                                                    @endphp
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="bi bi-star-fill text-warning me-1 mt-1"
+                                                            style="font-size: 1rem;"></i>
+                                                        <div class="me-1 mt-3">{{ number_format($averageRating, 1) }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-text d-inline-block py-2 px-4 rounded-pill mt-4"
+                                                        style="background-color: #e6e6e6; width: fit-content;">
+                                                        {{ $recommendation->kategori->nama_kategori }}
+                                                    </div>
                                                 </div>
-                                                <div class="card-text d-inline-block py-2 px-4 rounded-pill mt-4"
-                                                    style="background-color: #e6e6e6; width: fit-content;">
-                                                    {{ $recommendation->kategori->nama_kategori }}
-                                                </div>
+                                                <a href="{{ route('wisata.detail', ['id' => $recommendation->id]) }}"
+                                                    class="btn btn-primary">Detail <i data-feather="arrow-right"></i></a>
                                             </div>
-                                            <a href="{{ route('wisata.detail', ['id' => $recommendation->id]) }}"
-                                                class="btn btn-primary">Detail <i data-feather="arrow-right"></i></a>
                                         </div>
-                                    @else
-                                        <p>No recommendation available</p>
-                                    @endif
-                                </div>
-                            </div>
-                        @empty
+                                    </div>
+                                @endif
+                            @empty
+                                <p>No recommendations available</p>
+                            @endforelse
+                        @else
                             <p>No recommendations available</p>
-                        @endforelse
+                        @endif
                     </div>
                     <div class="swiper-pagination"></div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </section>
 @endsection
