@@ -357,7 +357,7 @@ section.about .text-about span {
 }
 
 /*------------------------------------
-Rekomendasi Section
+Wisata Section
 ------------------------------------*/
 
 section.rekomendasi {
@@ -368,6 +368,27 @@ section.rekomendasi h3 {
     margin-bottom: 2rem;
     color: var(--secondary-color);
     font-weight: 600;
+}
+
+/*------------------------------------
+Wisata Detail Section
+------------------------------------*/
+
+.swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.swiper-slide .card {
+    width: 100%;
+    max-width: 400px;
+}
+
+.swiper-slide .card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
 }
 
 /*------------------------------------

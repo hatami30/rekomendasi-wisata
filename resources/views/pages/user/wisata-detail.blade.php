@@ -29,6 +29,8 @@
                     <h2 class="mb-4 fw-normal">{{ $wisata->nama_wisata }}</h2>
                     <p class="fs-6 fw-light lead" style="max-width: 700px; text-align: justify;">Deskripsi wisata:
                         {{ $wisata->desk_wisata }}</p>
+                    <p class="fs-6 fw-light lead" style="max-width: 700px; text-align: justify;">Fasilitas:
+                        {{ $wisata->fasilitas }}</p>
                     <div class="mb-3" id="ratingContainer">
                         <div id="rating" data-rating="{{ $averageRating }}"></div>
                         <span id="ratingText">{{ number_format($averageRating, 1) }}</span>
@@ -114,7 +116,7 @@
                         </div>
                     @endif
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4 mt-5">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Unggah Gambar</h5>

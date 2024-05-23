@@ -23,9 +23,11 @@ class WisataDetailController extends Controller
         $predictions = $wisata->predictions;
         $images = Image::where('id_wisata', $id)
                             ->where('status', 'approved')
+                            ->take(5)
                             ->get();
         $komentars = Komentar::where('id_wisata', $id)
                     ->where('status', 'approved')
+                    ->take(10)
                     ->get();
 
         return view('pages.user.wisata-detail', compact('wisata', 'averageRating', 'predictions', 'komentars', 'images'));
