@@ -31,6 +31,7 @@
                             <th>Latitude</th>
                             <th>Longitude</th>
                             <th>Deskripsi</th>
+                            <th>Fasilitas</th>
                             <th>Kategori</th>
                             <th>Gambar</th>
                             <th>Aksi</th>
@@ -45,6 +46,7 @@
                                 <td>{{ $wisata->latitude }}</td>
                                 <td>{{ $wisata->longitude }}</td>
                                 <td>{{ $wisata->desk_wisata }}</td>
+                                <td>{{ $wisata->fasilitas }}</td>
                                 <td>{{ $wisata->kategori->nama_kategori }}</td>
                                 <td class="w-auto">
                                     <img src="{{ asset('storage/' . $wisata->gambar_wisata) }}"

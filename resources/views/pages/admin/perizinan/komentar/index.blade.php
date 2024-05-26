@@ -19,7 +19,7 @@
                     </div>
                 @endif
                 @if ($komentars->count() > 0)
-                    <table class="table table-striped">
+                    <table id="komentarTable" class="table table-striped">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -61,4 +61,12 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function() {
+            new DataTable('#komentarTable');
+        });
+    </script>
 @endsection

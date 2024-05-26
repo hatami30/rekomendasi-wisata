@@ -19,7 +19,7 @@
                     </div>
                 @endif
                 @if ($fotoPending->count() > 0)
-                    <table class="table table-striped">
+                    <table id="imageTable" class="table table-striped">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -64,4 +64,12 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function() {
+            new DataTable('#imageTable');
+        });
+    </script>
 @endsection

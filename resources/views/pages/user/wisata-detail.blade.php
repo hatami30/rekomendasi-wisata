@@ -27,8 +27,12 @@
             <div class="row mt-4">
                 <div class="col-lg-8">
                     <h2 class="mb-4 fw-normal">{{ $wisata->nama_wisata }}</h2>
-                    <p class="fs-6 fw-light lead" style="max-width: 700px; text-align: justify;">Deskripsi wisata:
-                        {{ $wisata->desk_wisata }}</p>
+                    <p class="fs-6 lead" style="max-width: 700px; text-align: justify;">
+                        <span style="font-weight: 600;">Deskripsi wisata:</span> {{ $wisata->desk_wisata }}
+                    </p>
+                    <p class="fs-6 lead" style="max-width: 700px; text-align: justify;">
+                        <span style="font-weight: 600;">Fasilitas:</span> {{ $wisata->fasilitas }}
+                    </p>
                     <div class="mb-3" id="ratingContainer">
                         <div id="rating" data-rating="{{ $averageRating }}"></div>
                         <span id="ratingText">{{ number_format($averageRating, 1) }}</span>
@@ -85,7 +89,7 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        <h4 class="mb-3">Komentar</h4>
+                        <h5 class="mb-3">Komentar</h5>
                         <form action="{{ route('komentar.store') }}" method="post">
                             @csrf
                             <input type="hidden" name="id_user" value="{{ auth()->id() }}">
@@ -99,7 +103,7 @@
                     </div>
                     @if ($komentars->isNotEmpty())
                         <div class="mt-4">
-                            <h5>Komentar Pengguna</h5>
+                            <h6>Komentar Pengguna</h6>
                             <ul class="list-group">
                                 @foreach ($komentars as $komentar)
                                     <li class="list-group-item">
@@ -114,7 +118,7 @@
                         </div>
                     @endif
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4 mt-5">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Unggah Gambar</h5>

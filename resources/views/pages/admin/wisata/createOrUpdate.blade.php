@@ -84,6 +84,14 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="fasilitas" class="form-label">Fasilitas</label>
+                            <textarea class="form-control" id="fasilitas" name="fasilitas" rows="3" required placeholder="Masukkan Fasilitas">{{ isset($wisata) ? $wisata->fasilitas : old('fasilitas') }}</textarea>
+                            @error('fasilitas')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
                             <label for="id_kategori" class="form-label">Kategori</label>
                             <select class="form-select selectpicker" id="id_kategori" name="id_kategori" required
                                 data-live-search="true">

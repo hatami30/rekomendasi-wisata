@@ -43,6 +43,7 @@ class AdminWisataController extends Controller
             'latitude' => 'required',
             'longitude' => 'required',
             'desk_wisata' => 'required',
+            'fasilitas' => 'required',
             'gambar_wisata' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
@@ -55,6 +56,7 @@ class AdminWisataController extends Controller
             'latitude' => $request->input('latitude'),
             'longitude' => $request->input('longitude'),
             'desk_wisata' => $request->input('desk_wisata'),
+            'fasilitas' => $request->input('fasilitas'),
             'gambar_wisata' => $gambarWisataPath,
         ]);
 
@@ -92,6 +94,7 @@ class AdminWisataController extends Controller
             'latitude' => 'required',
             'longitude' => 'required',
             'desk_wisata' => 'required',
+            'fasilitas' => 'required',
             'gambar_wisata' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
@@ -104,6 +107,7 @@ class AdminWisataController extends Controller
             'latitude' => $request->input('latitude'),
             'longitude' => $request->input('longitude'),
             'desk_wisata' => $request->input('desk_wisata'),
+            'fasilitas' => $request->input('fasilitas'),
         ];
 
         if ($request->hasFile('gambar_wisata')) {

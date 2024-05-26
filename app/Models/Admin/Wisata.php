@@ -17,6 +17,7 @@ class Wisata extends Model
         'latitude', 
         'longitude', 
         'desk_wisata', 
+        'fasilitas',
         'gambar_wisata'
     ];
 
