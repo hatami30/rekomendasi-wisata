@@ -20,7 +20,11 @@ class WisataDetailController extends Controller
         $wisata = Wisata::findOrFail($id);
         $ratings = Rating::where('id_wisata', $id)->get();
         $averageRating = $this->calculateAverageRating($ratings);
-        $predictions = $wisata->predictions;
+        $predictions = Prediction::with('wisata')
+            ->where('id_user', Auth::id())
+            ->orderBy('predicted', 'desc')
+            ->take(5)
+            ->get();
         $images = Image::where('id_wisata', $id)
                             ->where('status', 'approved')
                             ->take(5)
@@ -131,32 +135,37 @@ class WisataDetailController extends Controller
     {
         $userRatings = Rating::where('id_user', $userId)->get();
         $allRatings = Rating::where('id_user', '!=', $userId)->get();
-        $similarities = $this->calculateItemSimilarities($allRatings, $userRatings);
+        $similarities = $this->calculateItemSimilarities($allRatings);
         $ratedWisataIds = $userRatings->pluck('id_wisata')->toArray();
-        $ratedWisata = Wisata::whereIn('id', $ratedWisataIds)->get();
-        $this->calculatePredictions($userId, $userRatings, $similarities, $ratedWisata);
+        $allWisataIds = Wisata::pluck('id')->toArray();
+        $unratedWisataIds = array_diff($allWisataIds, $ratedWisataIds);
+        $this->calculatePredictions($userId, $userRatings, $similarities, $unratedWisataIds);
     }
 
-    public function calculateItemSimilarities($allRatings, $userRatings)
+    public function calculateItemSimilarities($allRatings)
     {
         $similarities = [];
 
-        foreach ($allRatings as $rating1) {
-            foreach ($allRatings as $rating2) {
-                if ($rating1->id !== $rating2->id) {
-                    $pair = [$rating1->id_wisata, $rating2->id_wisata];
+        $itemRatings = [];
+        foreach ($allRatings as $rating) {
+            $itemRatings[$rating->id_wisata][$rating->id_user] = $rating->average;
+        }
+
+        foreach ($itemRatings as $item1 => $ratings1) {
+            foreach ($itemRatings as $item2 => $ratings2) {
+                if ($item1 != $item2) {
+                    $pair = [$item1, $item2];
                     sort($pair);
                     $pairString = join('_', $pair);
 
                     if (!isset($similarities[$pairString])) {
-                        $similarity = $this->calculateSimilarity($rating1, $rating2, $userRatings);
+                        $similarity = $this->calculateCosineSimilarity($ratings1, $ratings2);
                         $similarities[$pairString] = $similarity;
 
-                        Similarity::create([
-                            'id_wisata1' => $pair[0],
-                            'id_wisata2' => $pair[1],
-                            'similarity' => $similarity,
-                        ]);
+                        Similarity::updateOrCreate(
+                            ['id_wisata1' => $pair[0], 'id_wisata2' => $pair[1]],
+                            ['similarity' => $similarity]
+                        );
                     }
                 }
             }
@@ -165,62 +174,53 @@ class WisataDetailController extends Controller
         return $similarities;
     }
 
-    public function calculateSimilarity($rating1, $rating2, $userRatings)
+    public function calculateCosineSimilarity($ratings1, $ratings2)
     {
-        $dotProduct = 0;
-        $magnitude1 = 0;
-        $magnitude2 = 0;
+        $commonUsers = array_intersect_key($ratings1, $ratings2);
 
-        foreach ($userRatings[$rating1->id_user] as $wisataId => $rating) {
-            if (isset($userRatings[$rating2->id_user]) && isset($userRatings[$rating2->id_user][$wisataId])) {
-                $dotProduct += $rating * $userRatings[$rating2->id_user][$wisataId];
-                $magnitude1 += pow($rating, 2);
-                $magnitude2 += pow($userRatings[$rating2->id_user][$wisataId], 2);
-            }
-        }
-
-        $magnitude1 = sqrt($magnitude1);
-        $magnitude2 = sqrt($magnitude2);
-
-        if ($magnitude1 == 0 || $magnitude2 == 0) {
+        if (count($commonUsers) == 0) {
             return 0;
         }
 
-        return $dotProduct / ($magnitude1 * $magnitude2);
+        $numerator = 0;
+        $denominator1 = 0;
+        $denominator2 = 0;
+
+        foreach ($commonUsers as $user => $rating) {
+            $numerator += $ratings1[$user] * $ratings2[$user];
+            $denominator1 += pow($ratings1[$user], 2);
+            $denominator2 += pow($ratings2[$user], 2);
+        }
+
+        $denominator = sqrt($denominator1) * sqrt($denominator2);
+
+        return $denominator == 0 ? 0 : $numerator / $denominator;
     }
 
     public function calculateAverageRating($ratings)
     {
         $sum = 0;
-        $count = 0;
+        $count = $ratings->count();
 
         foreach ($ratings as $rating) {
             $sum += $rating->average;
-            $count++;
         }
 
-        if ($count == 0) {
-            return 0;
-        }
-
-        return $sum / $count;
+        return $count > 0 ? $sum / $count : 0;
     }
 
-    public function calculatePredictions($userId, $userRatings, $similarities, $ratedWisata)
+    public function calculatePredictions($userId, $userRatings, $similarities, $unratedWisataIds)
     {
-        foreach ($ratedWisata as $wisata) {
-            if (!$userRatings->contains('id_wisata', $wisata->id)) {
-                $prediction = $this->predictRating($userRatings, $similarities, $userId, $wisata->id);
-                Prediction::create([
-                    'id_user' => $userId,
-                    'id_wisata' => $wisata->id,
-                    'predicted' => $prediction
-                ]);
-            }
+        foreach ($unratedWisataIds as $wisataId) {
+            $prediction = $this->predictRating($userRatings, $similarities, $wisataId);
+            Prediction::updateOrCreate(
+                ['id_user' => $userId, 'id_wisata' => $wisataId],
+                ['predicted' => $prediction]
+            );
         }
     }
 
-    public function predictRating($userRatings, $similarities, $userId, $wisataId)
+    public function predictRating($userRatings, $similarities, $wisataId)
     {
         $weightedSum = 0;
         $sumOfWeights = 0;
@@ -233,7 +233,7 @@ class WisataDetailController extends Controller
             if (isset($similarities[$pairString])) {
                 $similarity = $similarities[$pairString];
                 $weightedSum += $similarity * $rating->average;
-                $sumOfWeights += $similarity;
+                $sumOfWeights += abs($similarity);
             }
         }
 

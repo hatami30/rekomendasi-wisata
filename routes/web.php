@@ -19,7 +19,7 @@ Route::get('/', [Controllers\User\HomeController::class, 'index'])->name('home')
 Route::get('/about', [Controllers\User\AboutController::class, 'index'])->name('about');
 Route::get('/wisata', [Controllers\User\UserWisataController::class, 'index'])->name('wisata');
 Route::get('/wisata/{slug}', [Controllers\User\UserWisataController::class, 'filterByCategory'])->name('wisata.filter');
-Route::get('/wisata-bawean/{id}', [Controllers\User\WisataDetailController::class, 'show'])->name('wisata.detail'); 
+Route::get('/wisata-bawean/{id}', [Controllers\User\WisataDetailController::class, 'show'])->name('wisata.detail');
 
 // auth
 Route::get('/register', [Controllers\AuthController::class, 'showRegistrationForm'])->name('register.form');
