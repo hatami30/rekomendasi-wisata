@@ -8,7 +8,6 @@ use App\Models\Admin\Wisata;
 use Illuminate\Http\Request;
 use App\Models\User\Komentar;
 use App\Models\User\Prediction;
-
 use App\Models\User\Similarity;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -23,16 +22,16 @@ class WisataDetailController extends Controller
         $predictions = Prediction::with('wisata')
             ->where('id_user', Auth::id())
             ->orderBy('predicted', 'desc')
-            ->take(5)
+            ->take(3)
             ->get();
         $images = Image::where('id_wisata', $id)
-                            ->where('status', 'approved')
-                            ->take(5)
-                            ->get();
+            ->where('status', 'approved')
+            ->take(5)
+            ->get();
         $komentars = Komentar::where('id_wisata', $id)
-                    ->where('status', 'approved')
-                    ->take(10)
-                    ->get();
+            ->where('status', 'approved')
+            ->take(10)
+            ->get();
 
         return view('pages.user.wisata-detail', compact('wisata', 'averageRating', 'predictions', 'komentars', 'images'));
     }
@@ -61,8 +60,8 @@ class WisataDetailController extends Controller
         }
 
         $existingRating = Rating::where('id_user', $userId)
-                                ->where('id_wisata', $request->id_wisata)
-                                ->exists();
+            ->where('id_wisata', $request->id_wisata)
+            ->exists();
 
         if ($existingRating) {
             return redirect()->back()->with('error', 'Anda sudah memberikan rating untuk wisata ini.');

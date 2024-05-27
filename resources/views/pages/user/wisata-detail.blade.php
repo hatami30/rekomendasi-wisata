@@ -158,21 +158,18 @@
                     @foreach ($predictions as $prediction)
                     <div class="swiper-slide">
                         <div class="card">
-                            <img src="{{ asset('storage/' . $prediction->wisata->gambar_wisata) }}" class="card-img-top img-fluid" style="object-fit: cover; width: 100%; height: 200px;" alt="{{ $prediction->wisata->nama }}">
+                            <img src="{{ asset('storage/' . $prediction->wisata->gambar_wisata) }}" class="card-img-top img-fluid" style="object-fit: cover; width: 100%; height: 200px;" alt="{{ $prediction->wisata->nama_wisata }}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $prediction->wisata->nama_wisata }}</h5>
                                 <div class="d-flex flex-column mb-5">
-                                    @php
-                                    $averageRating = $prediction->wisata->ratings ? ($prediction->wisata->ratings->isNotEmpty() ? $prediction->wisata->ratings->avg('average') : 0) : 0;
-                                    @endphp
                                     <div class="d-flex align-items-center">
                                         <i class="bi bi-star-fill text-warning me-1 mt-1" style="font-size: 1rem;"></i>
                                         <div class="me-1 mt-3">
-                                            {{ number_format($averageRating, 1) }}
+                                            {{ number_format($prediction->wisata->rating->avg('average'), 1) }}
                                         </div>
                                     </div>
                                     <div class="card-text d-inline-block py-2 px-4 rounded-pill mt-4" style="background-color: #e6e6e6; width: fit-content;">
-                                        {{ $prediction->wisata->kategori ? $prediction->wisata->kategori->nama_kategori : 'Uncategorized' }}
+                                        {{ $prediction->wisata->kategori->nama_kategori }}
                                     </div>
                                 </div>
                                 <a href="{{ route('wisata.detail', ['id' => $prediction->wisata->id]) }}" class="btn btn-primary">Detail <i data-feather="arrow-right"></i></a>
@@ -181,7 +178,7 @@
                     </div>
                     @endforeach
                     @else
-                    <p class="text-center">No recommendations available</p>
+                    <p>No recommendations available</p>
                     @endif
                 </div>
                 <div class="swiper-pagination"></div>
