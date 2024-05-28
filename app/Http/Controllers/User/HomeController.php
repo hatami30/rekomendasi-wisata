@@ -25,7 +25,13 @@ class HomeController extends Controller
             ->groupBy('kategori')
             ->get();
 
-        return view('pages.user.home', compact('totalWisatas', 'wisatas'));
+        $topWisatas = Wisata::with('rating')
+            ->withAvg('rating', 'average')
+            ->orderByDesc('rating_avg_average')
+            ->take(5)
+            ->get();
+
+        return view('pages.user.home', compact('totalWisatas', 'wisatas', 'topWisatas'));
     }
 
     /**
