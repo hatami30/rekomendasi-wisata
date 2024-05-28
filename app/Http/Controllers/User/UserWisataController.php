@@ -14,8 +14,11 @@ class UserWisataController extends Controller
      */
     public function index()
     {
-        $wisatas = Wisata::paginate(12);
-        
+        $wisatas = Wisata::with('rating')
+            ->withAvg('rating', 'average')
+            ->orderByDesc('rating_avg_average')
+            ->paginate(12);
+
         return view('pages.user.wisata', compact('wisatas'));
     }
 
@@ -67,12 +70,17 @@ class UserWisataController extends Controller
         //
     }
 
-    public function filterByCategory($slug) 
+    public function filterByCategory($slug)
     {
         $kategori = Kategori::where('slug', $slug)->first();
 
         if ($kategori) {
-            $wisatas = Wisata::where('id_kategori', $kategori->id)->paginate(12);
+            $wisatas = Wisata::with('rating')
+                ->where('id_kategori', $kategori->id)
+                ->withAvg('rating', 'average')
+                ->orderByDesc('rating_avg_average')
+                ->paginate(12);
+
             return view('pages.user.wisata', compact('wisatas'));
         } else {
             abort(404);
