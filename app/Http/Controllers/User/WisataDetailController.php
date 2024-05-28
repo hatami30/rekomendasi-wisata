@@ -33,7 +33,12 @@ class WisataDetailController extends Controller
             ->take(10)
             ->get();
 
-        return view('pages.user.wisata-detail', compact('wisata', 'averageRating', 'predictions', 'komentars', 'images'));
+        $actualRatings = Rating::where('id_user', Auth::id())->pluck('average')->toArray();
+        $predictedRatings = Prediction::where('id_user', Auth::id())->pluck('predicted')->toArray();
+
+        $mae = $this->calculateMAE($actualRatings, $predictedRatings);
+
+        return view('pages.user.wisata-detail', compact('wisata', 'averageRating', 'predictions', 'komentars', 'images', 'mae'));
     }
 
     public function storeRating(Request $request)
@@ -237,5 +242,19 @@ class WisataDetailController extends Controller
         }
 
         return $sumOfWeights != 0 ? $weightedSum / $sumOfWeights : 0;
+    }
+
+    public function calculateMAE($actualRatings, $predictedRatings)
+    {
+        $sum = 0;
+        $n = count($actualRatings);
+
+        for ($i = 0; $i < $n; $i++) {
+            if ($actualRatings[$i] !== null && $predictedRatings[$i] !== null) {
+                $sum += abs($actualRatings[$i] - $predictedRatings[$i]);
+            }
+        }
+
+        return $n > 0 ? $sum / $n : 0;
     }
 }

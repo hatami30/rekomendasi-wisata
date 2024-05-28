@@ -44,12 +44,12 @@
                 @endforeach
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">
+                        {{-- <div class="card-header">
                             <h4>Ranking Chart</h4>
                         </div>
                         <div class="card-body">
                             <div id="chart-profile-visit"></div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
