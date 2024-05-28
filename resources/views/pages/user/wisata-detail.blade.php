@@ -189,7 +189,7 @@
                                 </div>
                             @endforeach
                         @else
-                            <p>No recommendations available</p>
+                            <p>Tidak ada rekomendasi yang tersedia</p>
                         @endif
                     </div>
                     <div class="swiper-pagination"></div>
