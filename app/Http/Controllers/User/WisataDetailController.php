@@ -72,7 +72,8 @@ class WisataDetailController extends Controller
             return redirect()->back()->with('error', 'Anda sudah memberikan rating untuk wisata ini.');
         }
 
-        $rating = new Rating($request->all());
+        $rating = new Rating();
+        $rating->setData($request->all());
         $rating->id_user = $userId;
         $rating->average = $rating->calculateAverageRating();
         $rating->save();
@@ -150,11 +151,9 @@ class WisataDetailController extends Controller
     {
         $similarities = [];
 
-        $normalizedRatings = $this->normalizeRatings($allRatings);
-
         $itemRatings = [];
-        foreach ($normalizedRatings as $rating) {
-            $itemRatings[$rating->id_wisata][$rating->id_user] = $rating->normalized_average;
+        foreach ($allRatings as $rating) {
+            $itemRatings[$rating->id_wisata][$rating->id_user] = $rating->average;
         }
 
         foreach ($itemRatings as $item1 => $ratings1) {
@@ -178,22 +177,6 @@ class WisataDetailController extends Controller
         }
 
         return $similarities;
-    }
-
-    public function normalizeRatings($allRatings)
-    {
-        $ratingSums = [];
-        $ratingCounts = [];
-        foreach ($allRatings as $rating) {
-            $ratingSums[$rating->id_wisata] += $rating->average;
-            $ratingCounts[$rating->id_wisata]++;
-        }
-
-        foreach ($allRatings as &$rating) {
-            $rating->normalized_average = ($rating->average - ($ratingSums[$rating->id_wisata] / $ratingCounts[$rating->id_wisata])) / ($rating->max - $rating->min);
-        }
-
-        return $allRatings;
     }
 
     public function calculateCosineSimilarity($ratings1, $ratings2)
