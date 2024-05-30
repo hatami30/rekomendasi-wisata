@@ -1,4 +1,3 @@
-// swiper JS
 var swiper = new Swiper(".mySwiper", {
     slidesPerView: 1,
     spaceBetween: 10,
@@ -18,7 +17,6 @@ var swiper = new Swiper(".mySwiper", {
     },
     pagination: {
         el: ".swiper-pagination",
-        // type: 'fraction',
         clickable: true,
     },
 });
