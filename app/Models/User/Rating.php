@@ -34,6 +34,18 @@ class Rating extends Model
         return $this->belongsTo(Wisata::class, 'id_wisata');
     }
 
+    public function setData($data)
+    {
+        $this->id_wisata = $data['id_wisata'];
+        $this->harga = $data['harga'];
+        $this->fasilitas = $data['fasilitas'];
+        $this->keamanan = $data['keamanan'];
+        $this->kenyamanan = $data['kenyamanan'];
+        $this->kebersihan = $data['kebersihan'];
+        $this->keindahan = $data['keindahan'];
+        $this->pelayanan = $data['pelayanan'];
+    }
+
     public function calculateAverageRating()
     {
         $criteria = $this->getCriteriaNames();

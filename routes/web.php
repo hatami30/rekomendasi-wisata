@@ -62,6 +62,8 @@ Route::middleware(['auth'])->group(function () {
         // peringkat
         Route::prefix('perhitungan')->name('perhitungan.')->group(function () {
             Route::get('/', [Controllers\Admin\PeringkatController::class, 'index'])->name('index');
+            Route::get('/export-similarity-csv', [Controllers\Admin\ExportController::class, 'exportSimilarityCSV'])->name('export.similarity.csv');
+            Route::get('/export-prediction-csv', [Controllers\Admin\ExportController::class, 'exportPredictionCSV'])->name('export.prediction.csv');
         });
 
         // perizinan

@@ -72,7 +72,8 @@ class WisataDetailController extends Controller
             return redirect()->back()->with('error', 'Anda sudah memberikan rating untuk wisata ini.');
         }
 
-        $rating = new Rating($request->all());
+        $rating = new Rating();
+        $rating->setData($request->all());
         $rating->id_user = $userId;
         $rating->average = $rating->calculateAverageRating();
         $rating->save();
