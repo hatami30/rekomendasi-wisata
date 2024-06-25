@@ -7,6 +7,7 @@ use App\Models\User\Rating;
 use App\Models\Admin\Wisata;
 use Illuminate\Http\Request;
 use App\Models\User\Komentar;
+use App\Models\Admin\Kategori;
 use App\Models\User\Prediction;
 use App\Models\User\Similarity;
 use App\Http\Controllers\Controller;
@@ -19,6 +20,26 @@ class WisataDetailController extends Controller
         $wisata = Wisata::findOrFail($id);
         $ratings = Rating::where('id_wisata', $id)->get();
         $averageRating = $this->calculateAverageRating($ratings);
+        
+        if (Auth::check()) {
+            $user = Auth::user();
+            $preferences = $user->preferences ? json_decode($user->preferences, true) : [];
+
+            if (empty($preferences)) {
+                $preferredTourismSites = [];
+            } else {
+                $kategoriIds = Kategori::whereIn('nama_kategori', $preferences)->pluck('id')->toArray();
+
+                $preferredTourismSites = Wisata::whereIn('id_kategori', $kategoriIds)
+                    ->withAvg('rating', 'average')
+                    ->orderByDesc('rating_avg_average')
+                    ->take(5)
+                    ->get();
+            }
+        } else {
+            $preferredTourismSites = [];
+        }
+
         $predictions = Prediction::with('wisata')
             ->where('id_user', Auth::id())
             ->orderBy('predicted', 'desc')
@@ -38,7 +59,7 @@ class WisataDetailController extends Controller
 
         $mae = $this->calculateMAE($actualRatings, $predictedRatings);
 
-        return view('pages.user.wisata-detail', compact('wisata', 'averageRating', 'predictions', 'komentars', 'images', 'mae'));
+        return view('pages.user.wisata-detail', compact('wisata', 'averageRating', 'preferredTourismSites', 'predictions', 'komentars', 'images', 'mae'));
     }
 
     public function storeRating(Request $request)

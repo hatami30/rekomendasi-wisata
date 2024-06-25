@@ -40,6 +40,7 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
             'role' => 'required|in:' . implode(',', [User::ROLE_ADMIN, User::ROLE_USER]),
+            'preferences' => 'nullable|array',
         ]);
 
         if ($validator->fails()) {
@@ -51,6 +52,7 @@ class AuthController extends Controller
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
             'role' => $request->input('role'),
+            'preferences' => json_encode($request->input('preferences', [])),
         ]);
 
         if ($user) {

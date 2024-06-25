@@ -46,11 +46,60 @@
                                 <i class="bi bi-emoji-grimace"></i>
                             </div>
                         </div>
+                        <div class="container mt-5">
+                            <h5 class="mb-3 txt-color" style="font-size: 1.5rem; ">Minat Kategori Wisata</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="preferences[]"
+                                                value="pantai" id="pantai">
+                                            <label class="form-check-label fw-normal" for="pantai">Pantai</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="preferences[]"
+                                                value="danau" id="danau">
+                                            <label class="form-check-label fw-normal" for="danau">Danau</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="preferences[]"
+                                                value="air-terjun" id="air-terjun">
+                                            <label class="form-check-label fw-normal" for="air-terjun">Air Terjun</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="preferences[]"
+                                                value="air-panas" id="air-panas">
+                                            <label class="form-check-label fw-normal" for="air-panas">Air Panas</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="preferences[]"
+                                                value="mangrove" id="mangrove">
+                                            <label class="form-check-label fw-normal" for="mangrove">Mangrove</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="preferences[]"
+                                                value="penangkaran" id="penangkaran">
+                                            <label class="form-check-label fw-normal" for="penangkaran">Penangkaran</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="preferences[]"
+                                                value="makam" id="makam">
+                                            <label class="form-check-label fw-normal" for="makam">Makam</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <button type="submit" id="submitBtn"
                             class="btn btn-custom btn-block btn-lg shadow-lg mt-5">Daftar</button>
                     </form>
                     <div class="text-center mt-5 text-lg fs-4">
-                        <p class='text-gray-600'>Sudah punya akun? <a href="./login" class="font-bold txt-color">Masuk</a>.
+                        <p class='text-gray-600'>Sudah punya akun? <a href="./login"
+                                class="font-bold txt-color">Masuk</a>.
                         </p>
                     </div>
                 </div>
@@ -65,11 +114,11 @@
 
 @section('script')
     <script>
-        document.getElementById('submitBtn').addEventListener('click', async function(event) {
+        document.querySelector('form').addEventListener('submit', async function(event) {
             event.preventDefault();
 
             try {
-                const formData = new FormData(document.querySelector('form'));
+                const formData = new FormData(this);
                 const csrfToken = '{{ csrf_token() }}';
 
                 const response = await axios.post('{{ url('/register') }}', formData, {

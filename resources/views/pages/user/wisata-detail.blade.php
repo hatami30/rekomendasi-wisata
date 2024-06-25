@@ -156,6 +156,46 @@
                 </div>
             @endif
             <div class="container mt-5">
+                <h3 class="text-center mb-4" style="color: #445434; font-weight: 600">Berdasarkan Kategori</h3>
+                <div class="swiper mySwiper">
+                    <div class="swiper-wrapper">
+                        @if ($preferredTourismSites && $preferredTourismSites->isNotEmpty())
+                            @foreach ($preferredTourismSites as $wisata)
+                                <div class="swiper-slide">
+                                    <div class="card">
+                                        <img src="{{ asset('storage/' . $wisata->gambar_wisata) }}"
+                                            class="card-img-top img-fluid"
+                                            style="object-fit: cover; width: 100%; height: 200px;"
+                                            alt="{{ $wisata->nama_wisata }}">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ $wisata->nama_wisata }}</h5>
+                                            <div class="d-flex flex-column mb-5">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="bi bi-star-fill text-warning me-1 mt-1"
+                                                        style="font-size: 1rem;"></i>
+                                                    <div class="me-1 mt-3">
+                                                        {{ number_format($wisata->rating->avg('average'), 1) }}
+                                                    </div>
+                                                </div>
+                                                <div class="card-text d-inline-block py-2 px-4 rounded-pill mt-4"
+                                                    style="background-color: #e6e6e6; width: fit-content;">
+                                                    {{ $wisata->kategori->nama_kategori }}
+                                                </div>
+                                            </div>
+                                            <a href="{{ route('wisata.detail', ['id' => $wisata->id]) }}"
+                                                class="btn btn-primary">Detail <i data-feather="arrow-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <p>Tidak ada rekomendasi yang tersedia.</p>
+                        @endif
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+            <div class="container mt-5">
                 <h3 class="text-center mb-4" style="color: #445434; font-weight: 600">Rekomendasi Lainnya</h3>
                 <div class="swiper mySwiper">
                     <div class="swiper-wrapper">
@@ -194,9 +234,9 @@
                     </div>
                     <div class="swiper-pagination"></div>
                 </div>
-                <div class="text-center mb-4">
+                {{-- <div class="text-center mb-4">
                     <p>Mean Absolute Error (MAE): {{ $mae }}</p>
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>
