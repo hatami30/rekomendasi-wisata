@@ -527,6 +527,16 @@ Swiper
 }
 
 /*------------------------ 
+Checkbox
+------------------------*/
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/*------------------------ 
 Responsive
 ------------------------*/
 

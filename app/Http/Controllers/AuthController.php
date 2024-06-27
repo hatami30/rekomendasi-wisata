@@ -26,7 +26,7 @@ class AuthController extends Controller
     {
         $this->urlGenerator = $urlGenerator;
     }
-    
+
     /**
      * Register a new user.
      *
@@ -40,6 +40,7 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
             'role' => 'required|in:' . implode(',', [User::ROLE_ADMIN, User::ROLE_USER]),
+            'preferences' => 'nullable|array',
         ]);
 
         if ($validator->fails()) {
@@ -51,6 +52,7 @@ class AuthController extends Controller
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
             'role' => $request->input('role'),
+            'preferences' => json_encode($request->input('preferences', [])),
         ]);
 
         if ($user) {
@@ -146,15 +148,15 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|email|exists:users',
         ], $customMessage);
-    
+
         $user = User::where('email', $request->email)->first();
-    
+
         if (!$user) {
             return redirect()->back()->with('error', 'Email tidak ditemukan');
         }
-    
+
         $token = Str::random(60);
-    
+
         PasswordResetToken::updateOrCreate(
             ['email' => $user->email],
             [
@@ -163,9 +165,9 @@ class AuthController extends Controller
                 'created_at' => Carbon::now()
             ]
         );
-    
+
         Mail::to($user->email)->send(new ResetPasswordMail($token));
-    
+
         return redirect()->back()->with('message', 'Email pemulihan kata sandi telah dikirim.');
     }
 
@@ -180,7 +182,7 @@ class AuthController extends Controller
         return view('pages.auth.reset', ['token' => $token]);
     }
 
-    public function resetPost(Request $request, $token) 
+    public function resetPost(Request $request, $token)
     {
         $customMessage = [
             'password.required' => 'Password tidak boleh kosong',
@@ -191,24 +193,24 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|confirmed|min:8',
         ], $customMessage);
-    
+
         $tokenData = PasswordResetToken::where('token', $token)->first();
-    
+
         if (!$tokenData) {
             return redirect()->back()->with('error', 'Token tidak valid');
         }
-    
+
         $user = User::where('email', $request->email)->first();
-    
+
         if (!$user) {
             return redirect()->back()->with('error', 'Email tidak valid');
         }
-    
+
         $user->password = Hash::make($request->password);
         $user->save();
-    
+
         $tokenData->delete();
-    
+
         return redirect()->route('login')->with('message', 'Kata sandi berhasil direset. Silakan login.');
     }
 }
